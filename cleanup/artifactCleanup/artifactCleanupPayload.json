@@ -1,0 +1,10 @@
+{
+    "repos": [
+        "example-repo-local"
+    ],
+    "timeUnit": "minute",
+    "timeInterval": 1,
+    "dryRun": true,
+    "disablePropertiesSupport": true,
+    "limit": 100
+}

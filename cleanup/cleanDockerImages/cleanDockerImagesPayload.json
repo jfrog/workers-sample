@@ -1,0 +1,5 @@
+{
+    "dockerRepos": ["example-docker-local"],
+    "byDownloadDate": false,
+    "dryRun": true
+}

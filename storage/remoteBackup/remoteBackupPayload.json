@@ -1,0 +1,6 @@
+{
+    "backups": {
+        "backup-remote-cache": "backup-local"
+    },
+    "dryRun": true
+}
