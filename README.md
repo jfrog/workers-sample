@@ -1,1 +1,24 @@
-# workers-sample
+# JFrog Workers Samples
+
+## JFrog Workers
+JFrog Workers is a service in the JFrog Platform that provides a serverless execution environment.
+You can create workers that react to events in the JFrog Platform similar to AWS Lambda services.
+Workers service provides more flexibility to accomplish your use cases.
+You can use these workers to perform certain tasks that extend the capabilities of the JFrog Platform according to your requirements.
+
+See the full documentation [here](https://jfrog.com/help/r/jfrog-platform-administration-documentation/workers).
+
+## Using the samples
+
+Each sample reside in its own directory that includes a _README.md_ with the instructions on how to use it.
+
+You can also refer to the [documentation](https://jfrog.com/help/r/jfrog-platform-administration-documentation/workers) to discover how to setup and use workers.
+
+## Contributing
+
+Feel free to contribute new samples, and please create issues if you need our support. 
+
+
+---
+
+Copyright &copy; 2023-* JFrog Ltd.

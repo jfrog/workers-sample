@@ -1,0 +1,4 @@
+{
+    "paths": [ "example-repo-local/dir1", "libs-release-local/dir2" ],
+    "dryRun": true
+}
