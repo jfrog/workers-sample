@@ -1,7 +1,3 @@
-// /!\/!\ Remove the imports when using it as worker code
-import { PlatformContext } from "../../../../service/src/execution/model/platform";
-import { BeforeUploadRequest, BeforeUploadResponse, RepoPath, UploadStatus } from "../../../../service/src/model/execution.generated";
-
 export default async function (context: PlatformContext, data: BeforeUploadRequest): Promise<Partial<BeforeUploadResponse>> {
     try {
         return restrictOverwrite(context, data);

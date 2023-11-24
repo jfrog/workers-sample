@@ -1,6 +1,3 @@
-// /!\/!\ Remove the imports when using it as worker code
-import { PlatformContext } from '../../../../service/src/execution/model/platform';
-
 const maxDaysProp = "docker.label.com.jfrog.artifactory.retention.maxDays";
 const maxCountProp = "docker.label.com.jfrog.artifactory.retention.maxCount";
 const oneDayMs = 24 * 60 * 1000;

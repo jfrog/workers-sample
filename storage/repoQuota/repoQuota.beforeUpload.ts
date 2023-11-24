@@ -1,7 +1,3 @@
-// /!\/!\ Remove the imports when using it as worker code
-import { PlatformContext } from "../../../../service/src/execution/model/platform";
-import { BeforeUploadRequest, BeforeUploadResponse, Status, UploadStatus } from "../../../../service/src/model/execution.generated";
-
 const REPO_QUOTA_PROPERTY = "repository.path.quota";
 
 export default async function (context: PlatformContext, data: BeforeUploadRequest): Promise<Partial<BeforeUploadResponse>> {

@@ -1,6 +1,3 @@
-// /!\/!\ Remove the imports when using it as worker code
-import { PlatformContext } from '../../../../service/src/execution/model/platform';
-
 export default async function deleteEmptyDirs(context: PlatformContext, data:  DeleteEmptyDirsParams) {
     if (!data?.paths?.length) {
         return { message: "nothing to delete" };

@@ -1,6 +1,3 @@
-// /!\/!\ Remove the imports when using it as worker code
-import { PlatformContext } from '../../../../service/src/execution/model/platform';
-
 const DEFAULT_TIME_UNIT = "month";
 const DEFAULT_TIME_INTERVAL = 1;
 const DEFAULT_LIMIT = 100;
