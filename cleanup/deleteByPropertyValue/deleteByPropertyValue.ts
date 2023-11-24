@@ -1,6 +1,3 @@
-// /!\/!\ Remove the imports when using it as worker code
-import { PlatformContext } from '../../../../service/src/execution/model/platform';
-
 export default async function(context: PlatformContext, params: DeleteByPropertyValueParams) {
     if (!params?.repos.length) {
         return { error: "There should be at least one repo" };

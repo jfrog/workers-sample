@@ -1,6 +1,3 @@
-// /!\/!\ Remove the imports when using it as worker code
-import { PlatformContext } from '../../../../service/src/execution/model/platform';
-
 export default async function(context: PlatformContext, data: RemoteBackupPayload) {
     try {
         const [complete, total ] = await runBackup(context, data.backups, data.dryRun);
