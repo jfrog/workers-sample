@@ -16,8 +16,6 @@ We have created these TypeScript samples based on [Artifactory User Plugin Sampl
 
 Please submit a pull request if you have other valuable samples.
 
-You can use these samples inside your Worker with minimal changes or extend them further for your use case.
-
 Each sample reside in its own directory that includes a _README.md_ with the instructions on how to use it.
 
 You can also refer to the [documentation](https://jfrog.com/help/r/jfrog-platform-administration-documentation/workers) to discover how to setup and use workers.
