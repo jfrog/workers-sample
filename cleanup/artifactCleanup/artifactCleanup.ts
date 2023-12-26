@@ -94,7 +94,7 @@ async function findItemsNotDownloadedSince(context: PlatformContext, notDownload
     // Items should have never been downloaded or been downloaded before the given date
     const downloadedFilter = `"$or":[{"stat.downloaded":{"$lt":"${notDownloadSinceTimePeriod}"}},{"stat.downloads":{"$eq":null}}]`;
     // Items repos
-    const reposFilter = `"$or":[${repos.map((repo) => `{"repo":"${repo}"}`)}]`;
+    const reposFilter = `"$or":[${repos.map((repo) => `{"repo":"` + repo + `"}`)}]`;
 
    let query = `items.find({${createdFilter},${downloadedFilter},${reposFilter}})`
    query = `${query}.include("repo","name","path","type","size")`;
