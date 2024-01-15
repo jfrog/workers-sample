@@ -1,6 +1,7 @@
 const DEFAULT_TIME_UNIT = "month";
 const DEFAULT_TIME_INTERVAL = 1;
 const DEFAULT_LIMIT = 100;
+const DEFAULT_REMOVE_CONCURRENCY = 10;
 
 interface ArtifactCleanupPayload {
     repos: Array<string>
@@ -10,6 +11,7 @@ interface ArtifactCleanupPayload {
     paceTimeMS: number
     disablePropertiesSupport: boolean
     limit: number
+    concurrency: number
 }
 
 interface ArtifactInfo {
@@ -35,6 +37,7 @@ export default async function artifactCleanup(context: PlatformContext, data: Ar
         const timeUnit = data.timeUnit || DEFAULT_TIME_UNIT;
         const timeInterval = data.timeInterval || DEFAULT_TIME_INTERVAL;
         const limit = data.limit || DEFAULT_LIMIT;
+        const concurrency = data.concurrency || DEFAULT_REMOVE_CONCURRENCY;
         const dryRun = Boolean(data.dryRun);
         const disablePropertiesSupport = Boolean(data.disablePropertiesSupport);
 
@@ -45,7 +48,9 @@ export default async function artifactCleanup(context: PlatformContext, data: Ar
         console.info(`Removing all artifacts not downloaded since ${notDownloadSinceTimePeriod}`);
         const itemsToRemove = await findItemsNotDownloadedSince(context, notDownloadSinceTimePeriod, repos, limit);
 
-        await Promise.allSettled(itemsToRemove.map((item) => cleanupItem(context, item, skip, dryRun)));
+        for (let start = 0; start < itemsToRemove.length; start += concurrency) {
+            await Promise.allSettled(itemsToRemove.slice(start, Math.min(start + concurrency, itemsToRemove.length)).map((item) => cleanupItem(context, item, skip, dryRun)));
+        }
 
         return { status: 'STATUS_SUCCESS', message: `${itemsToRemove.length} item(s) processed` };
     } catch (x) {
@@ -96,10 +101,10 @@ async function findItemsNotDownloadedSince(context: PlatformContext, notDownload
     // Items repos
     const reposFilter = `"$or":[${repos.map((repo) => `{"repo":"` + repo + `"}`)}]`;
 
-   let query = `items.find({${createdFilter},${downloadedFilter},${reposFilter}})`
-   query = `${query}.include("repo","name","path","type","size")`;
-   query = `${query}.sort({"$asc":["repo","name"]})`;
-   query = `${query}.limit(${limit})`;
+    let query = `items.find({${createdFilter},${downloadedFilter},${reposFilter}})`
+    query = `${query}.include("repo","name","path","type","size")`;
+    query = `${query}.sort({"$asc":["repo","name"]})`;
+    query = `${query}.limit(${limit})`;
 
     return runAql(context, query);
 }
@@ -110,11 +115,11 @@ async function getSkippedPaths(context: PlatformContext, repos: Array<string>) {
     for (let repo of repos) {
         const query = `items.find({"repo": "${repo}","type": "any","@cleanup.skip": "true"}).include("repo","name","path","type","size")`;
         const pathsTmp = await runAql(context, query)
-                .then((items) => items.map((item) => {
-                    const path = getItemPath(item);
-                    console.trace(`skip found for ${repo}:${path}`);
-                    return path;
-                }));
+            .then((items) => items.map((item) => {
+                const path = getItemPath(item);
+                console.trace(`skip found for ${repo}:${path}`);
+                return path;
+            }));
 
         // Simplify the list to only have one parent
         const paths: Array<string> = [];
@@ -156,11 +161,11 @@ async function runAql(context: PlatformContext, query: string) {
     console.log(`Running AQL: ${query}`)
     try {
         const queryResponse = await context.clients.platformHttp.post(
-                '/artifactory/api/search/aql',
-                query,
-                {
-                    'Content-Type': 'text/plain'
-                });
+            '/artifactory/api/search/aql',
+            query,
+            {
+                'Content-Type': 'text/plain'
+            });
         return (queryResponse.data.results || []) as Array<any>;
     } catch (x) {
         console.log(`AQL query failed: ${x.message}`);
