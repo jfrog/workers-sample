@@ -6,5 +6,6 @@
     "timeInterval": 1,
     "dryRun": true,
     "disablePropertiesSupport": true,
-    "limit": 100
+    "limit": 100,
+    "concurrency": 10
 }

@@ -16,8 +16,11 @@ Expected JSON Payload
 - `repos`: A list of repositories to clean. This parameter is required.
 - `dryRun`: If this parameter is passed, artifacts will not actually be deleted. Default *false*.
 - `disablePropertiesSupport`: Disable the support of Artifactory Properties (see below *Artifactory Properties support* section). Default *false*.
+- `limit`: The maximum number of artifacts to delete during the cleanup. Default *100*.
+- `concurrency`: The number of artifacts to delete in parallel (can impact performances). Default *10*.
 
 An example file could contain the following json:
+
 ```json
 {
     "repos": [
@@ -27,7 +30,8 @@ An example file could contain the following json:
     "timeInterval": 3,
     "dryRun": true,
     "disablePropertiesSupport": true,
-    "limit": 100
+    "limit": 100,
+    "concurrency": 10
 }
 ```
 
@@ -43,8 +47,8 @@ Executing
 
 To execute the code as a worker generic event:
 
-* Create a new generic worker with the given code (eg: my-worker)
-* Example of execution using cURL
+- Create a new generic worker with the given code (eg: my-worker)
+- Example of execution using cURL
 
 ```bash
 curl -X POST -v -u admin:password "http://localhost:8080/worker/api/v1/execute/my-worker" --json @- <<EOF
@@ -56,7 +60,8 @@ curl -X POST -v -u admin:password "http://localhost:8080/worker/api/v1/execute/m
     "timeInterval": 3,
     "dryRun": true,
     "disablePropertiesSupport": true,
-    "limit": 100
+    "limit": 100,
+    "concurrency": 10
 }
 EOF
 ```
