@@ -20,6 +20,8 @@ Each sample reside in its own directory that includes a _README.md_ with the ins
 
 You can also refer to the [documentation](https://jfrog.com/help/r/jfrog-platform-administration-documentation/workers) to discover how to setup and use workers.
 
+Each worker sample is named following a convention `<workerKey>[.<triggerEvent>].ts`. No `triggerEvent` implies a `GENERIC_EVENT`.
+
 ## Contributing
 
 Feel free to contribute new samples, and please create issues if you need our support. 
