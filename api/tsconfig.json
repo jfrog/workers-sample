@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "module": "nodenext",
+        "moduleResolution": "nodenext",
+        "declaration": true,
+        "target": "es2017",
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": false,
+        "noFallthroughCasesInSwitch": false,
+        "lib": [
+            "ES2021.String"
+        ]
+    },
+    "include": [
+        "**/*.ts",
+        "node_modules/@types/**/*.d.ts"
+    ]
+}
