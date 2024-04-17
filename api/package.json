@@ -1,0 +1,29 @@
+{
+  "name": "jfrog-workers",
+  "version": "0.3.0",
+  "description": "JFrog workers interfaces and stubs",
+  "homepage": "https://github.com/jfrog/workers-sample",
+  "contributors": [
+    {
+      "name": "HERVE ESTEGUET",
+      "githubUsername": "ehl-jf",
+      "url": "https://github.com/ehl-jf"
+    }
+  ],
+  "main": "index.ts",
+  "author": "JFrog",
+  "license": "ISC",
+  "exports": {
+    "./package.json": "./package.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jfrog/workers-sample.git"
+  },
+  "dependencies": {
+    "axios": "1.6.7"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.2"
+  }
+}
