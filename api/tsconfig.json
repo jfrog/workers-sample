@@ -8,8 +8,9 @@
         "forceConsistentCasingInFileNames": false,
         "noFallthroughCasesInSwitch": false,
         "lib": [
-            "ES2021.String"
-        ]
+            "ES2021"
+        ],
+        "outDir": "./dist"
     },
     "include": [
         "**/*.ts",
