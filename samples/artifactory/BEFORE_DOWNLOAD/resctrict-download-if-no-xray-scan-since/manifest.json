@@ -1,0 +1,16 @@
+{
+    "name": "resctrict-download-if-no-xray-scan-since",
+    "description": "Resctrict download if no xray scan since",
+    "filterCriteria": {
+        "artifactFilterCriteria": {
+            "repoKeys": [
+                "example-repo-local"
+            ]
+        }
+    },
+    "secrets": {},
+    "sourceCodePath": "./worker.ts",
+    "action": "BEFORE_DOWNLOAD",
+    "enabled": false,
+    "debug": true
+}
