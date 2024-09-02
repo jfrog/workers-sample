@@ -1,0 +1,9 @@
+{
+    "name": "token-validation",
+    "description": "Validate tokens before they are created",
+    "secrets": {},
+    "sourceCodePath": "./worker.ts",
+    "action": "BEFORE_CREATE_TOKEN",
+    "enabled": true,
+    "debug": true
+}

@@ -1,0 +1,16 @@
+{
+    "name": "check-project-repository",
+    "description": "Check that an image is uploaded to the correct repository",
+    "filterCriteria": {
+        "artifactFilterCriteria": {
+            "repoKeys": [
+                "docker-local"
+            ]
+        }
+    },
+    "secrets": {},
+    "sourceCodePath": "./worker.ts",
+    "action": "BEFORE_UPLOAD",
+    "enabled": true,
+    "debug": true
+}
