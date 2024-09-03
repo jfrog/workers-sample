@@ -1,0 +1,16 @@
+{
+    "name": "property-creation-permission",
+    "description": "Validate property creation permission",
+    "secrets": {},
+    "filterCriteria": {
+        "artifactFilterCriteria": {
+            "repoKeys": [
+                "example-repo-local"
+            ]
+        }
+    },
+    "sourceCodePath": "./worker.ts",
+    "action": "BEFORE_PROPERTY_CREATE",
+    "enabled": true,
+    "debug": true
+}

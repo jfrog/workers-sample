@@ -1,0 +1,16 @@
+{
+    "name": "report-download-to-external-endpoint",
+    "description": "Report download to external endpoint",
+    "filterCriteria": {
+        "artifactFilterCriteria": {
+            "repoKeys": [
+                "example-repo-local"
+            ]
+        }
+    },
+    "secrets": {},
+    "sourceCodePath": "./worker.ts",
+    "action": "AFTER_DOWNLOAD",
+    "enabled": false,
+    "debug": true
+}

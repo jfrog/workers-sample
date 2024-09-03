@@ -1,0 +1,16 @@
+{
+    "name": "copy-deb-and-rpm",
+    "description": "Copy deb and rpm",
+    "filterCriteria": {
+        "artifactFilterCriteria": {
+            "repoKeys": [
+                "example-repo-local"
+            ]
+        }
+    },
+    "secrets": {},
+    "sourceCodePath": "./worker.ts",
+    "action": "AFTER_CREATE",
+    "enabled": false,
+    "debug": true
+}

@@ -1,0 +1,61 @@
+{
+    "metadata": {
+        "repoPath": {
+            "key": "docker-local",
+            "path": "my-image/1.0.0/manifest.json",
+            "id": "docker-local:my-image/1.0.0/manifest.json"
+        },
+        "contentLength": -1,
+        "lastModified": 1724072721599,
+        "disableRedirect": true,
+        "repoType": 1
+    },
+    "headers": {
+        "X-Checksum-Sha256": {
+            "value": [
+                "27e7e0544d18d4ea7cd6a01d097c263e87e1115548b6e5930354acf8b7b97713"
+            ]
+        }
+    },
+    "userContext": {
+        "id": "jfac@01j53gsv4ycnf91zvtctac087v/users/admin",
+        "isToken": true
+    },
+    "artifactProperties": {
+        "docker.manifest": {
+            "value": [
+                "1.0.0"
+            ]
+        },
+        "sha256": {
+            "value": [
+                "27e7e0544d18d4ea7cd6a01d097c263e87e1115548b6e5930354acf8b7b97713"
+            ]
+        },
+        "oci.artifact.type": {
+            "value": [
+                "application/vnd.docker.container.image.v1+json"
+            ]
+        },
+        "docker.repoName": {
+            "value": [
+                "my-image"
+            ]
+        },
+        "docker.manifest.digest": {
+            "value": [
+                "sha256:27e7e0544d18d4ea7cd6a01d097c263e87e1115548b6e5930354acf8b7b97713"
+            ]
+        },
+        "docker.label.com.jfrog.artifactory.projectKey": {
+            "value": [
+                "project-1"
+            ]
+        },
+        "docker.manifest.type": {
+            "value": [
+                "application/vnd.docker.distribution.manifest.v2+json"
+            ]
+        }
+    }
+}

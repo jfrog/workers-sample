@@ -1,0 +1,16 @@
+{
+    "name": "check-image-signature",
+    "description": "Check a docker image signature",
+    "filterCriteria": {
+        "artifactFilterCriteria": {
+            "repoKeys": [
+                "docker-local"
+            ]
+        }
+    },
+    "secrets": {},
+    "sourceCodePath": "./worker.ts",
+    "action": "AFTER_CREATE",
+    "enabled": true,
+    "debug": true
+}

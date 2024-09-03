@@ -1,0 +1,16 @@
+{
+    "name": "allow-upload-by-pattern",
+    "description": "Allow upload by pattern",
+    "filterCriteria": {
+        "artifactFilterCriteria": {
+            "repoKeys": [
+                "example-repo-local"
+            ]
+        }
+    },
+    "secrets": {},
+    "sourceCodePath": "./worker.ts",
+    "action": "BEFORE_UPLOAD",
+    "enabled": false,
+    "debug": true
+}

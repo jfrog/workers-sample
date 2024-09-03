@@ -1,0 +1,9 @@
+{
+    "name": "clean-docker-images",
+    "description": "Clean docker images",
+    "secrets": {},
+    "sourceCodePath": "./worker.ts",
+    "action": "GENERIC_EVENT",
+    "enabled": false,
+    "debug": true
+}

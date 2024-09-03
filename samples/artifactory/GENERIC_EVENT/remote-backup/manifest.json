@@ -1,0 +1,9 @@
+{
+    "name": "remote-backup",
+    "description": "Remote backup",
+    "secrets": {},
+    "sourceCodePath": "./worker.ts",
+    "action": "GENERIC_EVENT",
+    "enabled": false,
+    "debug": true
+}

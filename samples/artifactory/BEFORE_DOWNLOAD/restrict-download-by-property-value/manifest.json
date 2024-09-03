@@ -1,0 +1,16 @@
+{
+    "name": "restrict-download-by-property-value",
+    "description": "Restrict download by property value",
+    "filterCriteria": {
+        "artifactFilterCriteria": {
+            "repoKeys": [
+                "example-repo-local"
+            ]
+        }
+    },
+    "secrets": {},
+    "sourceCodePath": "./worker.ts",
+    "action": "BEFORE_DOWNLOAD",
+    "enabled": false,
+    "debug": true
+}

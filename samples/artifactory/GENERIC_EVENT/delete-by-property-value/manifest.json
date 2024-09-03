@@ -1,0 +1,9 @@
+{
+    "name": "delete-by-property-value",
+    "description": "Delete by property value",
+    "secrets": {},
+    "sourceCodePath": "./worker.ts",
+    "action": "GENERIC_EVENT",
+    "enabled": false,
+    "debug": true
+}

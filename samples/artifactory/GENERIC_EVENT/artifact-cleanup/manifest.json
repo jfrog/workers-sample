@@ -1,0 +1,9 @@
+{
+    "name": "artifact-cleanup",
+    "description": "Artifact cleanup",
+    "secrets": {},
+    "sourceCodePath": "./worker.ts",
+    "action": "GENERIC_EVENT",
+    "enabled": false,
+    "debug": true
+}

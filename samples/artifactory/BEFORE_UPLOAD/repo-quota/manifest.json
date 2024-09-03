@@ -1,0 +1,16 @@
+{
+    "name": "repo-quota",
+    "description": "Repo quota",
+    "filterCriteria": {
+        "artifactFilterCriteria": {
+            "repoKeys": [
+                "example-repo-local"
+            ]
+        }
+    },
+    "secrets": {},
+    "sourceCodePath": "./worker.ts",
+    "action": "BEFORE_UPLOAD",
+    "enabled": false,
+    "debug": true
+}

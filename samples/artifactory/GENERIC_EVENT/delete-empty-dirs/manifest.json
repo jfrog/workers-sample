@@ -1,0 +1,9 @@
+{
+    "name": "delete-empty-dirs",
+    "description": "Delete empty dirs",
+    "secrets": {},
+    "sourceCodePath": "./worker.ts",
+    "action": "GENERIC_EVENT",
+    "enabled": false,
+    "debug": true
+}
