@@ -5,7 +5,7 @@ import { PlatformContext, BeforePropertyCreateRequest, BeforePropertyCreateRespo
  * It checks if the user is an admin and allows the creation of the property.
  * Only admins are allowed to create properties.
  */
-export default async (context: PlatformContext, data: BeforePropertyCreateRequest): Promise<BeforePropertyCreateResponse> => {
+export default async (context: PlatformContext, data: BeforePropertyCreateRequest): Promise<Partial<BeforePropertyCreateResponse>> => {
     if (isAdmin(data)) {
         return {
             message: "Permission granted to admin",

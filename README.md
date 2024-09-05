@@ -23,7 +23,7 @@ Each sample folder has been generated with the [JFrog CLI](https://docs.jfrog-ap
 
 The worker code resides in a file named _worker.ts_.
 
-For an introduction or how to develop JFrog Workers using the JFrog CLI checkout [this blogpost](https://jfrog.com/blog/doing-devops-your-way-on-saas-solutions-connecting-jfrog-cli-to-your-jfrog-workers/).
+For an introduction on how to develop JFrog Workers using the JFrog CLI checkout [this blogpost](https://jfrog.com/blog/doing-devops-your-way-on-saas-solutions-connecting-jfrog-cli-to-your-jfrog-workers/).
 
 You can also refer to the [documentation](https://jfrog.com/help/r/jfrog-platform-administration-documentation/workers) to discover how to setup and use workers.
 
