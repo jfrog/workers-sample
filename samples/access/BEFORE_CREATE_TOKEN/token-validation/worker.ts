@@ -98,7 +98,7 @@ function isServiceToken(data: BeforeCreateTokenRequest) {
         return false;
     }
     const subject = data.tokenSpec.subject;
-    return subject && (/^[^/]+\/nodes\/[^/]+$/.test(subject) || !subject.include('/'));
+    return subject && (/^[^/]+\/nodes\/[^/]+$/.test(subject) || !subject.includes('/'));
 }
 
 /**
@@ -109,5 +109,9 @@ function isServiceToken(data: BeforeCreateTokenRequest) {
  * @returns <code>true</code> if the token expiry exceeds the maximum expiry duration, <code>false</code> otherwise
  */
 function tokenExpiryExceeds(data: BeforeCreateTokenRequest, maxExpiry: number) {
-    return data.tokenSpec.expiry > maxExpiry;
+    // expiresIn == 0 means the token never expires
+    if (!data.tokenSpec.expiresIn) {
+        return maxExpiry > 0;
+    }
+    return data.tokenSpec.expiresIn > 0 && data.tokenSpec.expiresIn > maxExpiry;
 }
