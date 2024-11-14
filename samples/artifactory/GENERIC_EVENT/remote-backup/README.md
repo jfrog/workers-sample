@@ -16,7 +16,9 @@ Payload
 
 The worker expects a JSON object of repository pairs. For example, if you'd like to
 backup `repo-foo-remote` to `repo-foo-backup-local`, and also backup
-`repo-bar-remote` to `repo-bar-backup-local`, your configuration would be:
+`repo-bar-remote` to `repo-bar-backup-local`.
+You can also specify `maxDepth` the maximum path depth to copy, as well as `maxFiles` the max number of item to copy.
+Your configuration would be:
 
 ```json
 {
@@ -24,7 +26,9 @@ backup `repo-foo-remote` to `repo-foo-backup-local`, and also backup
         "repo-foo-remote-cache": "repo-foo-backup-local",
         "repo-bar-remote-cache": "repo-bar-backup-local"
     },
-    "dryRun": false
+    "dryRun": false,
+    "maxDepth": 10,
+    "maxFiles": 1000
 }
 ```
 
@@ -43,6 +47,8 @@ curl -X POST -v -u admin:password "http://localhost:8080/worker/api/v1/execute/m
         "repo-bar-remote-cache": "repo-bar-backup-local"
     },
     "dryRun": true
+    "maxDepth": 10,
+    "maxFiles": 1000
 }
 EOF
 ```

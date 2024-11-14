@@ -9,12 +9,13 @@
   },
   "license": "ISC",
   "devDependencies": {
-    "jfrog-workers": "^0.4.0",
     "@golevelup/ts-jest": "^0.4.0",
     "@types/jest": "^29.5.12",
     "jest": "^29.7.0",
     "jest-jasmine2": "^29.7.0",
-    "ts-jest": "^29.1.2"
+    "jfrog-workers": "^0.4.0",
+    "ts-jest": "^29.1.2",
+    "typescript": "^5.6.3"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -26,7 +27,9 @@
     "clearMocks": true,
     "maxConcurrency": 1,
     "testRegex": "\\.spec\\.ts$",
-    "moduleDirectories": ["node_modules"],
+    "moduleDirectories": [
+      "node_modules"
+    ],
     "collectCoverageFrom": [
       "**/*.ts"
     ],
