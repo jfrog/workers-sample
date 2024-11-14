@@ -52,14 +52,20 @@ When a Docker image is deployed, Artifactory will automatically create
 properties reflecting each of its labels. These properties are read by the
 worker in order to decide on the cleanup policy for the image.
 
-Cleanup can be triggered via a REST endpoint. For example:
+Cleanup can be triggered using the JFrog CLI. For example:
 
 ```shell
-curl -X POST -v -u admin:password "http://localhost:8080/worker/api/v1/execute/my-worker" --json @- <<EOF
+jf worker exec my-worker - <<EOF
 {
     "dockerRepos": ["example-docker-local"],
     "byDownloadDate": false,
     "dryRun": true
 }
 EOF
+```
+
+Execute with the payload located into a file named `payload.json`:
+
+```shell
+jf worker exec my-worker @payload.json
 ```

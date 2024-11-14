@@ -18,9 +18,15 @@ To execute the worker:
 
 
 ```shell
-curl -X POST -v -u admin:password "http://localhost:8080/worker/api/v1/execute/my-worker" --json @- <<EOF
+jf worker exec my-worker - <<EOF
 {
     "path": ["example-docker-local/dir1", "example-docker-local/dir2"]
 }
 EOF
+```
+
+Execute with the payload located into a file named `payload.json`:
+
+```shell
+jf worker exec my-worker @payload.json
 ```

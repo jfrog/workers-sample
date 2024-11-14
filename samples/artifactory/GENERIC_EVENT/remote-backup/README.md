@@ -16,7 +16,9 @@ Payload
 
 The worker expects a JSON object of repository pairs. For example, if you'd like to
 backup `repo-foo-remote` to `repo-foo-backup-local`, and also backup
-`repo-bar-remote` to `repo-bar-backup-local`, your configuration would be:
+`repo-bar-remote` to `repo-bar-backup-local`.
+You can also specify `maxDepth` the maximum path depth to copy, as well as `maxFiles` the max number of item to copy.
+Your configuration would be:
 
 ```json
 {
@@ -24,7 +26,9 @@ backup `repo-foo-remote` to `repo-foo-backup-local`, and also backup
         "repo-foo-remote-cache": "repo-foo-backup-local",
         "repo-bar-remote-cache": "repo-bar-backup-local"
     },
-    "dryRun": false
+    "dryRun": false,
+    "maxDepth": 10,
+    "maxFiles": 1000
 }
 ```
 
@@ -34,15 +38,23 @@ Usage
 
 The worker can be executed using as a Generic event.
 
+Execute with the payload from standard input:
 
 ```shell
-curl -X POST -v -u admin:password "http://localhost:8080/worker/api/v1/execute/my-worker" --json @- <<EOF
+jf worker exec my worker - <<EOF
 {
     "backups": {
         "repo-foo-remote-cache": "repo-foo-backup-local",
         "repo-bar-remote-cache": "repo-bar-backup-local"
     },
     "dryRun": true
+    "maxDepth": 10,
+    "maxFiles": 1000
 }
 EOF
+```
+Execute with the payload located into a file name `payload.json`:
+
+```shell
+jf worker exec my-worker @payload.json
 ```

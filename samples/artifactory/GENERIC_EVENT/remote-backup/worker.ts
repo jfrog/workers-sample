@@ -3,69 +3,73 @@ import { PlatformContext } from 'jfrog-workers';
 
 export default async function(context: PlatformContext, data: RemoteBackupPayload) {
     try {
-        const [complete, total ] = await runBackup(context, data.backups, data.dryRun);
+        const [complete, total] = await runBackup(context, data.backups, data.dryRun, data.checksums, data.maxDepth ?? 10, data.maxFiles ?? 1000);
         return { complete, total };
     } catch (x) {
         return { error: x.message };
     }
 }
 
-async function runBackup(context: PlatformContext, repos: Record<string, string>, dryRun: boolean) {
-    let complete = 0, total = 0;
+async function runBackup(context: PlatformContext, repos: Record<string, string>, dryRun: boolean, checksums: boolean, maxDepth: number, maxFiles: number): Promise<[number, number]> {
+    const res = { complete: 0, total: 0 };
     const repositories = new Repositories(context);
-    for (const [src,dest] of Object.entries(repos)) {
-        const query = JSON.stringify({type: 'file', repo: src})
-        const aql = `items.find(${query}).include("repo","path","name")`
-        for (const item of await runAql(context, aql)) {
-            let path = item.path + '/' + item.name;
-            if (item.path === '.') {
-                path = item.name;
-            }
-            const srcPath = buildRepoPath(path, src);
-            const destPath = buildRepoPath(path, dest);
-            const srcInfo = await repositories.getFileInfo(srcPath);
-            const destInfo = await repositories.getFileInfo(destPath);
-            if (srcInfo &&
-                    (!destInfo ||
-                            (srcInfo.checksums.sha1 !== destInfo.checksums.sha1))) {
-                total += 1
-                try {
-                    await repositories.copy(srcPath, destPath, dryRun)
-                    complete += 1
-                } catch (x) {
-                    console.warn(`Unable to backup ${srcPath.path} to ${destPath.path}: ${x.message}`)
-                }
-            }
+    // We do not use await Promise.allSettled because it will use too much CPU
+    for (const [src, dest] of Object.entries(repos)) {
+        await backupDir(src, dest, dryRun, checksums, repositories, maxDepth, maxFiles, res);
+    }
+    return [res.complete, res.total];
+}
+
+async function backupDir(
+    src: string,
+    dest: string,
+    dryRun: boolean,
+    checksums: boolean,
+    repositories: Repositories,
+    maxDepth: number,
+    maxFiles: number,
+    acc: { complete: number, total: number },
+) {
+    let destSums: Record<string, string> | undefined;
+    if (checksums) {
+        destSums = {};
+        for (const item of await repositories.getRepoFiles(dest, maxDepth, false)) {
+            destSums[item.uri] = item.sha1;
         }
     }
-    return [complete, total]
-}
 
-async function runAql(context: PlatformContext, query: string) {
-    console.log(`Running AQL: ${query}`)
-    try {
-        const queryResponse = await context.clients.platformHttp.post(
-                '/artifactory/api/search/aql',
-                query,
-                {
-                    'Content-Type': 'text/plain'
-                });
-        return (queryResponse.data.results || []) as Array<any>;
-    } catch (x) {
-        console.log(`AQL query failed: ${x.message}`);
+    for (const item of await repositories.getRepoFiles(src, maxDepth, false)) {
+        if (acc.complete >= maxFiles) {
+            break;
+        }
+
+        const srcPath = buildRepoPath(item.uri, src);
+        const destPath = buildRepoPath(item.uri, dest);
+
+        if (destSums) {
+            if (destSums[item.uri] === item.sha1) {
+                continue;
+            }
+        }
+
+        acc.total += 1
+        try {
+            await repositories.copy(srcPath, destPath, dryRun)
+            acc.complete += 1
+        } catch (x) {
+            console.warn(`Unable to backup ${srcPath.path} to ${destPath.path}: ${x.message}`)
+        }
     }
-    return [];
 }
 
-function joinPath(l: string, r: string): string {
-    return l.replaceAll(/^(.*)\/$/g, "$1") + '/' + r.replaceAll(/^\/(.*)$/g, "$1");
+export function joinPath(l: string, r: string): string {
+    const result = l.endsWith('/') ? l : l + '/';
+    const right = r.startsWith('/') ? r.substring(1) : r;
+    return result + right;
 }
 
-function buildRepoPath(path: string, repo?: string): RepoPath {
+export function buildRepoPath(path: string, repo?: string): RepoPath {
     const pathParts = path.split("/");
-    if (pathParts.length === 0) {
-        throw new Error(`Invalid path ${path}`)
-    }
     const finalRepo = repo || pathParts[0];
     return  {
         path: path.startsWith(finalRepo) ? path : joinPath(finalRepo, path),
@@ -75,9 +79,15 @@ function buildRepoPath(path: string, repo?: string): RepoPath {
 }
 
 
-interface RemoteBackupPayload {
+export interface RemoteBackupPayload {
     backups: Record<string, string>
     dryRun: boolean
+    // Check if the files are already backed up
+    checksums: boolean
+    // Maximum depth to search for files (default 10
+    maxDepth?: number
+    // Maximum number of files to copy (default 1000)
+    maxFiles?: number
 }
 
 interface RepoPath {
@@ -86,12 +96,12 @@ interface RepoPath {
     repo: string
 }
 
-interface ChecksumsInfo {
-    sha1: string
-}
-
-interface FileInfo {
-    checksums: ChecksumsInfo
+interface File {
+    uri: string,
+    folder: boolean,
+    size: number,
+    lastModified: number,
+    sha1: string,
 }
 
 class Repositories {
@@ -101,17 +111,23 @@ class Repositories {
     async copy(src: RepoPath, dest: RepoPath, dryRun = false) {
         console.log(`Copying ${src.path} to ${dest.path}`)
         await this.ctx.clients.platformHttp.post(`/artifactory/api/copy/${src.path}?to=${encodeURIComponent(dest.path)}&dry=${dryRun ? 1: 0}`);
-        console.log(`Copied ${src.path} to ${dest.path}`)
     }
 
-    async getFileInfo(repoPath: RepoPath): Promise<FileInfo | undefined> {
-        console.debug(`GetFileInfo: ${repoPath.path}`)
+    async getRepoFiles(repo: string, depth=1, listFolders=false): Promise<Array<File>> {
+        console.debug(`GetRepoFiles: ${repo}`)
+
+        let depthParam = "&deep=0";
+        if (depth > 1) {
+            depthParam = `&deep=1&depth${depth}`;
+        }
+
+        const listFoldersParam = `&listFolders=${listFolders ? 1 : 0}`;
+
         try {
-            const res = await this.ctx.clients.platformHttp.get(`${joinPath("/artifactory/api/storage", repoPath.path)}`);
-            const { checksums } = res.data
-            return { checksums: checksums || { sha1: "" } };
+            const res = await this.ctx.clients.platformHttp.get(`${joinPath("/artifactory/api/storage", repo)}?list&includeRootPath=0${depthParam}${listFoldersParam}`);
+            return res.data?.children ?? res.data?.files ?? [];
         } catch (x) {
-            console.warn(`Cannot get ${repoPath.path} fileInfo: ${x.message}`);
+            console.warn(`Cannot get ${repo} files: ${x.message}`);
         }
     }
 }
