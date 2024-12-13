@@ -14,7 +14,7 @@ Execution
 
 
 ```shell
-curl -X POST -v -u admin:password "http://localhost:8080/worker/api/v1/execute/my-worker" --json @- <<EOF
+jf worker exec my-worker - <<EOF
 {
     "repos": [ "example-repo-local" ],
     "properties": {
@@ -24,4 +24,10 @@ curl -X POST -v -u admin:password "http://localhost:8080/worker/api/v1/execute/m
     "dryRun": true
 }
 EOF
+```
+
+Execute with the payload located into a file named `payload.json`:
+
+```shell
+jf worker exec my-worker @payload.json
 ```

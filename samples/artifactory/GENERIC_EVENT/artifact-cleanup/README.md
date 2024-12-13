@@ -48,10 +48,10 @@ Executing
 To execute the code as a worker generic event:
 
 - Create a new generic worker with the given code (eg: my-worker)
-- Example of execution using cURL
+- Example of execution using JFrog CLI
 
 ```bash
-curl -X POST -v -u admin:password "http://localhost:8080/worker/api/v1/execute/my-worker" --json @- <<EOF
+jf worker exec my-worker - <<EOF
 {
     "repos": [
         "libs-release-local"
@@ -64,4 +64,10 @@ curl -X POST -v -u admin:password "http://localhost:8080/worker/api/v1/execute/m
     "concurrency": 10
 }
 EOF
+```
+
+- Example with the payload located into a file named `payload.json`:
+
+```shell
+jf worker exec my-worker @payload.json
 ```
