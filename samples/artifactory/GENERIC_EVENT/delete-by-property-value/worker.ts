@@ -2,9 +2,14 @@ import { PlatformContext } from 'jfrog-workers';
 
 
 export default async function(context: PlatformContext, params: DeleteByPropertyValueParams) {
-    if (!params?.repos.length) {
+    if (!params?.repos || params.repos.length === 0) {
         return { error: "There should be at least one repo" };
     }
+
+    if (!params?.properties || Object.keys(params.properties).length === 0) {
+        return { error: "There should be at least one property" };
+    }
+
     try {
         let total = 0;
         for (const [propertyName, propertyValue] of Object.entries(params.properties)) {
@@ -15,8 +20,6 @@ export default async function(context: PlatformContext, params: DeleteByProperty
         return { error: x.message };
     }
 }
-
-
 
 async function fileCleanup(context: PlatformContext, propertyName: string, propertyValue: number, repos: Array<string>, dryRun: boolean ) {
     console.log(`Looking for files with property of ${propertyName} with a value lower than ${propertyValue}... in ${JSON.stringify(repos)}`);

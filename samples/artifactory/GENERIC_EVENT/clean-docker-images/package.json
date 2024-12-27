@@ -1,7 +1,7 @@
 {
   "name": "clean-docker-images",
   "description": "Run a script on GENERIC_EVENT",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
     "deploy": "jf worker deploy",
     "undeploy": "jf worker rm \"clean-docker-images\"",

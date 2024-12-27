@@ -6,7 +6,7 @@ const yumRepositoryList = ["rpm"] //if something is created here...
 const yumRepoCopyList   = ["rpm-dest"]    //copy it to the corresponding repo here
 const debRepoCopyList   = ["debian-dest"]    //copy it to the corresponding repo here
 
-const layOutRegex = /(?<orgPath>.+?)\/(?<module>[^/]+)\/(\2)-(?<baseRev>[^/]+?)\.(?<ext>(?:(?!\d))[^\-\/]+|7z)/;
+const layOutRegex = /(?<orgPath>.+?)\/(?<module>[^\/]+?)-(?<baseRev>[^\/]+)\.(?<ext>[a-z]+)/;
 
 export default async (context: PlatformContext, data: AfterCreateRequest): Promise<AfterCreateResponse> => {
     await copyPackage(context, data.metadata.repoPath);
