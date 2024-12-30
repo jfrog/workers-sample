@@ -1,0 +1,16 @@
+{
+    "name": "restrict-overwrite",
+    "description": "Restrict overwrite",
+    "filterCriteria": {
+        "artifactFilterCriteria": {
+            "repoKeys": [
+                "example-repo-local"
+            ]
+        }
+    },
+    "secrets": {},
+    "sourceCodePath": "./worker.ts",
+    "action": "BEFORE_CREATE",
+    "enabled": false,
+    "debug": true
+}
