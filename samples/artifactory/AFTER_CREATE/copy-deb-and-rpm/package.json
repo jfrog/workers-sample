@@ -1,7 +1,7 @@
 {
   "name": "copy-deb-and-rpm",
   "description": "Run a script on AFTER_CREATE",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
     "deploy": "jf worker deploy",
     "undeploy": "jf worker rm \"copy-deb-and-rpm\"",

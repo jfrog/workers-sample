@@ -1,56 +1,87 @@
-Artifactory Clean Docker Images User Plugin
-===========================================
+# Artifactory Clean Docker Images Worker
 
-This worker code is used to clean Docker repositories based on configured cleanup policies.
+This worker script is designed to clean Docker repositories hosted in Artifactory based on configurable cleanup policies. It is useful for managing storage and maintaining repository hygiene.
 
-Configuration
--------------
+---
 
-- `dockerRepos`: A list of Docker repositories to clean. If a repo is not in
-  this list, it will not be cleaned.
-- `byDownloadDate`: An optional boolean flag (true/false).
-    * **false** (default): retention will take into account only **creation** date of the image
-      (technically, its manifest file). This is the original behaviour.
-    * **true**: identify images to remove by their **last download date** or failing that,
-      last **update** date. This mode of operation has been inspired by the 'artifactCleanup'
-      plugin.
+## Key Features
 
-For example:
+- Cleans Docker repositories based on:
+    -   Maximum age of images
+    -   Maximum number of image versions
+-   Supports cleanup based on:
+    -   Image creation date
+    -   Last download date
+- Provides optional dry-run mode for safe execution.
+- Handles complex repositories with multiple Docker files.
+- Logs processed repositories and cleanup details for transparency.
+    
+
+## Configuration
+---
+The worker accepts the following configuration parameters:
+
+### Required Parameters
+
+*   **`dockerRepos`**: A list of Docker repositories to clean. Only repositories listed here will be processed.
+    
+
+### Optional Parameters
+
+*   **`byDownloadDate`** (boolean, default: `false`):
+    
+    *   **`false`**: Images are cleaned based on their creation date.
+        
+    *   **`true`**: Images are cleaned based on their last download date or, if unavailable, their last update date.
+        
+*   **`dryRun`** (boolean, default: `false`):
+    
+    *   **`true`**: Simulates the cleanup process without deleting any files.
+        
+    *   **`false`**: Executes the cleanup, deleting the identified files.
+        
+
+### Example Configuration
 
 ```json
 {
     "dockerRepos": ["example-docker-local", "example-docker-local-2"],
-    "byDownloadDate": false
+    "byDownloadDate": false,
+    "dryRun": true
 }
 ```
 
-Usage
+### Usage
 -----
 
-Cleanup policies are specified as labels on the Docker image. Currently, this
-plugin supports the following policies:
+### Cleanup Policies
 
-- `maxDays`: The maximum number of days a Docker image can exist in an
-  Artifactory repository. Any images older than this will be deleted.
-    * when `byDownloadDate=true`: images downloaded or updated within last `maxDays` will
-      be preserved
-- `maxCount`: The maximum number of versions of a particular image which should
-  exist. For example, if there are 10 versions of a Docker image and `maxCount`
-  is set to 6, the oldest 4 versions of the image will be deleted.
-    * when `byDownloadDate=true`: image age will be determined by first checking
-      the _Last Downloaded Date_ and _Modification Date_ will be checked only when this image has never
-      been downloaded.
+Cleanup policies are defined using labels in the Docker image. The worker supports the following policies:
 
-To set these labels for an image, add them to the Dockerfile before building:
+*   **`maxDays`**: Specifies the maximum number of days an image can exist in the repository. Older images will be deleted.
+    
+    *   When `byDownloadDate=true`: Images downloaded or updated within the last `maxDays` will be preserved.
+        
+*   **`maxCount`**: Specifies the maximum number of image versions to retain. Excess versions will be deleted, starting with the oldest.
+    
+    *   When `byDownloadDate=true`: Image age is determined first by the _Last Downloaded Date_ and then by the _Modification Date_ if the image has never been downloaded.
+        
 
-``` dockerfile
+### Adding Cleanup Labels to Docker Images
+
+Labels can be added to the Dockerfile before building the image. For example:
+
+```dockerfile
 LABEL com.jfrog.artifactory.retention.maxCount="10"
 LABEL com.jfrog.artifactory.retention.maxDays="7"
 ```
 
-When a Docker image is deployed, Artifactory will automatically create
-properties reflecting each of its labels. These properties are read by the
-worker in order to decide on the cleanup policy for the image.
+When deployed, these labels are automatically converted into properties in Artifactory. The worker reads these properties to determine the cleanup policy for each image.
+
+Execution
+---------
+
+### JFrog CLI
 
 Cleanup can be triggered using the JFrog CLI. For example:
 
@@ -64,8 +95,81 @@ jf worker exec my-worker - <<EOF
 EOF
 ```
 
-Execute with the payload located into a file named `payload.json`:
+Alternatively, execute with a payload file:
 
 ```shell
 jf worker exec my-worker @payload.json
 ```
+
+
+Worker Timeout
+--------------
+
+### Timeout Behavior
+
+*   The worker has a maximum execution timeout of **5 seconds**. If the cleanup process for a complex repository exceeds this limit:
+    
+    *   Files that can be deleted within the timeout are processed.
+        
+    *   A timeout error is returned: 
+        ```json
+            { "message": "Worker execution timeout" }
+        ```
+        
+    *   Remaining files are **not** processed.
+        
+
+### Implications
+
+*   Repositories with large numbers of images or complex cleanup requirements may require multiple executions to fully clean.
+    
+*   It is recommended to periodically monitor and trigger the worker for such repositories.
+    
+
+Logging
+-------
+
+### Payload and Repository Logs
+
+* The worker logs the received payload and the processed repositories for debugging purposes. Example:
+```
+Payload - { 
+            "dockerRepos": ["example-docker-local"],
+            "byDownloadDate": false,
+            "dryRun": false
+          }
+Repos - ["example-docker-local"]
+```
+    
+*   Errors and unprocessed files due to timeout are logged for transparency.
+    
+
+Example Cleanup Workflow
+------------------------
+
+1.  Configure cleanup policies using labels in the Dockerfile.
+    
+2.  Deploy the images to Artifactory.
+    
+3.  Define the worker payload:
+```json
+{
+    "dockerRepos": ["example-docker-local"],
+    "byDownloadDate": true,
+    "dryRun": false
+}
+```
+    
+4.  Trigger the worker using the JFrog CLI.
+    
+5.  Review the logs for details about the cleanup process.
+    
+
+Notes
+-----
+
+*   **Timeout Management**: For large or complex repositories, consider breaking cleanup into smaller tasks.
+    
+*   **Dry Run**: Always perform a dry run for initial testing to validate the cleanup logic.
+    
+*   **Monitoring**: Regularly monitor the storage usage and worker logs to ensure efficient repository management.
