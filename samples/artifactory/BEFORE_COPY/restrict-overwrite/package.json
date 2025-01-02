@@ -1,7 +1,7 @@
 {
   "name": "restrict-overwrite",
-  "description": "Run a script on BEFORE_UPLOAD",
-  "version": "1.0.1",
+  "description": "Run a script on BEFORE_COPY",
+  "version": "1.0.0",
   "scripts": {
     "deploy": "jf worker deploy",
     "undeploy": "jf worker rm \"restrict-overwrite\"",
