@@ -1,3 +1,5 @@
+import { PlatformContext } from 'jfrog-workers';
+
 export default async function(context: PlatformContext, data: RemoteBackupPayload) {
     try {
         const [complete, total] = await runBackup(context, data.backups, data.dryRun, data.checksums, data.maxDepth ?? 10, data.maxFiles ?? 1000);

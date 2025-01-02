@@ -1,3 +1,5 @@
+import { PlatformContext } from 'jfrog-workers';
+
 interface RepoStatsPayload {
   paths: string
 };

@@ -1,3 +1,5 @@
+import { PlatformContext, BeforeDownloadRequest, BeforeDownloadResponse, DownloadStatus } from 'jfrog-workers';
+
 export default async (context: PlatformContext, data: BeforeDownloadRequest): Promise<BeforeDownloadResponse> => {
     const MAX_CRITICAL_SEC_ISSUES_ACCEPTED = 2;
     const isXrayAvailable = await checkIfXrayAvailable();

@@ -1,3 +1,5 @@
+import { PlatformContext, BeforePropertyCreateRequest, BeforePropertyCreateResponse, BeforePropertyCreateStatus } from 'jfrog-workers';
+
 /**
  * This worker is used to intercept the creation of a property.
  * It checks if the user is an admin and allows the creation of the property.

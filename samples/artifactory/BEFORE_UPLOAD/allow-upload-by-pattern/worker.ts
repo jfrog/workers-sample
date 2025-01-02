@@ -1,3 +1,5 @@
+import { PlatformContext, BeforeUploadRequest, BeforeUploadResponse, UploadStatus } from 'jfrog-workers';
+
 export default async (context: PlatformContext, data: BeforeUploadRequest): Promise<BeforeUploadResponse> => {
     // This RegExp will match all repopaths that start with 'org/company/' and end with the extension .jar OR .war
     // For instance those paths will match the regex :

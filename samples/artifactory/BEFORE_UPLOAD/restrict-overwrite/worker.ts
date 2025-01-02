@@ -1,3 +1,5 @@
+import { PlatformContext, BeforeUploadRequest, BeforeUploadResponse, UploadStatus } from 'jfrog-workers';
+
 export default async function (context: PlatformContext, data: BeforeUploadRequest): Promise<Partial<BeforeUploadResponse>> {
     try {
         return restrictOverwrite(context, data);

@@ -1,3 +1,5 @@
+import { PlatformContext, BeforeUploadRequest, BeforeUploadResponse, UploadStatus } from 'jfrog-workers';
+
 /**
  * This worker is used to intercept the upload of a Docker image's.
  * It checks if the image is targeting a project repository and if the project key is present in the manifest.

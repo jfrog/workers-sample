@@ -1,3 +1,5 @@
+import { PlatformContext, AfterDownloadRequest, AfterDownloadResponse } from 'jfrog-workers';
+
 export default async (context: PlatformContext, data: AfterDownloadRequest): Promise<AfterDownloadResponse> => {
     // MODIFY THOSE TWO CONSTANTS TO FIT YOUR NEEDS
     const URL = 'https://<external_endpoint>';

@@ -1,3 +1,5 @@
+import { PlatformContext, BeforeUploadRequest, BeforeUploadResponse, UploadStatus } from 'jfrog-workers';
+
 const REPO_QUOTA_PROPERTY = "repository.path.quota";
 
 export default async function (context: PlatformContext, data: BeforeUploadRequest): Promise<Partial<BeforeUploadResponse>> {

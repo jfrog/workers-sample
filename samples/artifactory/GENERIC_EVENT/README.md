@@ -16,35 +16,6 @@ Generic Event Workers are specialized JFrog workers that are not tied to specifi
 2. **Scheduled Jobs:** Execute pre-scheduled tasks using external job schedulers.
 3. **Custom API Integration:** Enable workflows that require external API calls or integrations.
 
-## How to Trigger
-
-1. **Via API:**
-   - Use the JFrog API to invoke the worker, passing any required data in the request payload.
-
-   Example API call:
-   ```bash
-   curl -X POST "https://<your-artifactory-instance>/api/v1/workers/execute/<worker-name>" \
-        -H "Authorization: Bearer <your-token>" \
-        -H "Content-Type: application/json" \
-        -d '{
-              "key": "value"
-            }'
-   ```
-
-2. **JFrog CLI Execution:**
-   - When executing these workers using the JFrog CLI, the process involves:
-     1. Downloading the worker script.
-     2. Downloading all required dependencies.
-     3. Running the worker as a Node.js script.
-   - **Important:** Ensure you include the required import statements in the worker, such as:
-     ```typescript
-     import { PlatformContext } from 'jfrog-workers';
-     ```
-   - This is crucial because the worker is executed as a Node.js script within the CLI environment.
-
-3. **Manual Trigger:**
-   - Execute the worker directly from the JFrog interface or a custom script.
-
 ## Example Worker Logic
 
 Here’s a simple example of a Generic Event Worker:

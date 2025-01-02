@@ -1,3 +1,5 @@
+import { PlatformContext, BeforeDownloadRequest, BeforeDownloadResponse, DownloadStatus } from 'jfrog-workers';
+
 export default async (context: PlatformContext, data: BeforeDownloadRequest): Promise<BeforeDownloadResponse> => {
     const thresholdDate = new Date(new Date().getUTCDate() - 7);
     const thresholdDays = 2;

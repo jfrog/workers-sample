@@ -1,3 +1,5 @@
+import { PlatformContext, BeforeDownloadRequest, BeforeDownloadResponse, DownloadStatus } from 'jfrog-workers';
+
 export default async (context: PlatformContext, data: BeforeDownloadRequest): Promise<BeforeDownloadResponse> => {
     let forbiddenProperties: ForbiddenProperty[] = [];
     forbiddenProperties.push({
