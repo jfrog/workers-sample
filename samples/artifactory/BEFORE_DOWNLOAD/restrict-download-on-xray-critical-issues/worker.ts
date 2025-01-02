@@ -1,13 +1,19 @@
 import { PlatformContext, BeforeDownloadRequest, BeforeDownloadResponse, DownloadStatus } from 'jfrog-workers';
 
-
 export default async (context: PlatformContext, data: BeforeDownloadRequest): Promise<BeforeDownloadResponse> => {
     const MAX_CRITICAL_SEC_ISSUES_ACCEPTED = 2;
+    const isXrayAvailable = await checkIfXrayAvailable();
+    if (!isXrayAvailable) {
+        return {
+            status: DownloadStatus.DOWNLOAD_WARN,
+            message: "Could not check for xray scans because xray is not available. Proceeding download with warning.",
+            headers: {} // This can be populated if response headers are required to be added/overriden. 
+        }
+    }
 
     let status: DownloadStatus = DownloadStatus.DOWNLOAD_UNSPECIFIED;
     let message = '';
 
-    // Reponse strucure from the XRay endpoint: https://jfrog.com/help/r/jfrog-rest-apis/scans-list-get-artifacts
     let responseData: {
         "data": [
             {
@@ -52,14 +58,31 @@ export default async (context: PlatformContext, data: BeforeDownloadRequest): Pr
             status = DownloadStatus.DOWNLOAD_WARN;
             message = 'Request returned unexpected result. Download will proceed with warning.'
         }
-    } catch(error) {
+    } catch (error) {
         message = "Error during scan check. Download will proceed with warning.";
         status = DownloadStatus.DOWNLOAD_WARN;
-        console.error(`Request failed: ${ error.message }`);
+        console.error(`Request failed: ${error.message}`);
     }
 
     return {
         status,
         message,
+        headers: {} // This can be populated if response headers are required to be added/overriden.
+    }
+
+
+    async function checkIfXrayAvailable(): Promise<boolean> {
+        let response;
+        try {
+            response = await context.clients.platformHttp.get('/xray/api/v1/system/ping');
+            if (response.data.status !== "pong") {
+                throw new Error("Xray not available");
+            }
+            return true;
+        } catch (error) {
+            console.log(`Encountered error ${error.message} while checking for xray readiness. Allowing download with a warning`);
+            return false;
+        }
+
     }
 }

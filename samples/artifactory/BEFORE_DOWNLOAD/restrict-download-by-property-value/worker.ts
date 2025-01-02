@@ -1,30 +1,33 @@
 import { PlatformContext, BeforeDownloadRequest, BeforeDownloadResponse, DownloadStatus } from 'jfrog-workers';
 
-
 export default async (context: PlatformContext, data: BeforeDownloadRequest): Promise<BeforeDownloadResponse> => {
-    const EXPECTED_PROPERTY_KEY = 'FORBIDDEN';
-    const EXPECTED_PROPERTY_VALUE = 'true';
+    let forbiddenProperties: ForbiddenProperty[] = [];
+    forbiddenProperties.push({
+        key: "FORBIDDEN",
+        values: ["true"]
+    });
 
-    let status: DownloadStatus = DownloadStatus.DOWNLOAD_UNSPECIFIED;
-    let message = '';
+    let status: DownloadStatus = DownloadStatus.DOWNLOAD_PROCEED;
+    let message = 'Allowing Download';
 
     try {
         const res = await context.clients.platformHttp.get(`/artifactory/api/storage/${data.repoPath.key}/${data.repoPath.path}?properties`);
-        const artifactData: { // Data structure from Artifactory endpoint: https://jfrog.com/help/r/jfrog-rest-apis/item-properties
+        const artifactData: {
             "properties": {
                 [key: string]: string[]
             },
             "uri": string
         } = res.data;
-
-        if (artifactData.properties[EXPECTED_PROPERTY_KEY] && artifactData.properties[EXPECTED_PROPERTY_KEY][0] === EXPECTED_PROPERTY_VALUE) {
-            message = `Download is forbidden. The artifact ${data.repoPath.key}/${data.repoPath.path} has the property ${EXPECTED_PROPERTY_KEY} = ${EXPECTED_PROPERTY_VALUE}`;
-            status = DownloadStatus.DOWNLOAD_STOP;
-        } else {
-            message = "Download can proceed";
-            status = DownloadStatus.DOWNLOAD_PROCEED;
+        const properties = artifactData.properties;
+        for(const forbiddenProperty of forbiddenProperties) {
+            if(isPropertyPresent(forbiddenProperty, properties)) {
+                status = DownloadStatus.DOWNLOAD_STOP;
+                message = `Stopping Download because forbiddenProperty ${forbiddenProperty.key} is present with forbidden values`;
+                break;
+            }
         }
-    } catch(error) {
+    } catch (error) {
+        console.log(`Got error: ${JSON.stringify(error)}`);
         message = `Download proceed with a warning. Could not check if artifact is forbidden or not.`;
         status = DownloadStatus.DOWNLOAD_WARN;
     }
@@ -32,5 +35,27 @@ export default async (context: PlatformContext, data: BeforeDownloadRequest): Pr
     return {
         status,
         message,
+        headers: {}
+    }
+
+    type ForbiddenProperty = {
+        key: string,
+        values: string[]
+    };
+    type ArtifactProperties = {
+        [key: string]: string[]
+    }
+
+    function isPropertyPresent(forbiddenProperty: ForbiddenProperty, artifactProperties: ArtifactProperties): boolean {
+        const artifactPropertyKeys = new Set(Object.keys(artifactProperties));
+        if(artifactPropertyKeys.has(forbiddenProperty.key)) {
+            const artifactPropertyValues = new Set(artifactProperties[forbiddenProperty.key]);
+            for(const forbiddenValue of forbiddenProperty.values) {
+                if(artifactPropertyValues.has(forbiddenValue)){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
