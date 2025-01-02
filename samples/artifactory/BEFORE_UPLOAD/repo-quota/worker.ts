@@ -36,8 +36,10 @@ async function checkQuota(context: PlatformContext, data: BeforeUploadRequest): 
             message: `Quota exceeded for ${data.metadata.repoPath.key}/${parentPath}`,
         };
     }
-
-    return { status: UploadStatus.UPLOAD_PROCEED };
+    return { 
+        status: UploadStatus.UPLOAD_PROCEED,
+        message: `Upload is allowed for ${data.metadata.repoPath.path} under ${data.metadata.repoPath.key}.`,
+    };
 }
 
 async function getRepoQuota(context: PlatformContext, repoKey: string, path: string): Promise<number> {

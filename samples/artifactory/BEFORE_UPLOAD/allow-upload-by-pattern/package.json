@@ -1,7 +1,7 @@
 {
   "name": "allow-upload-by-pattern",
   "description": "Run a script on BEFORE_UPLOAD",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
     "deploy": "jf worker deploy",
     "undeploy": "jf worker rm \"allow-upload-by-pattern\"",
