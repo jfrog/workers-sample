@@ -1,7 +1,7 @@
 {
   "name": "restrict-download-by-property-value",
   "description": "Run a script on BEFORE_DOWNLOAD",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "scripts": {
     "deploy": "jf worker deploy",
     "undeploy": "jf worker rm \"restrict-download-by-property-value\"",
@@ -26,7 +26,9 @@
     "clearMocks": true,
     "maxConcurrency": 1,
     "testRegex": "\\.spec\\.ts$",
-    "moduleDirectories": ["node_modules"],
+    "moduleDirectories": [
+      "node_modules"
+    ],
     "collectCoverageFrom": [
       "**/*.ts"
     ],
