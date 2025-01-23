@@ -1,0 +1,9 @@
+{
+    "name": "delete-deprecated",
+    "description": "Deletes all artifacts marked with the property analysis.deprecated=true",
+    "secrets": {},
+    "sourceCodePath": "./worker.ts",
+    "action": "GENERIC_EVENT",
+    "enabled": false,
+    "debug": true
+}
