@@ -1,0 +1,9 @@
+{
+    "name": "mavenSnapshotCleanupWhenRelease",
+    "description": "Deletes Maven SNAPSHOT artifacts when the release version is published",
+    "secrets": {},
+    "sourceCodePath": "./worker.ts",
+    "action": "GENERIC_EVENT",
+    "enabled": false,
+    "debug": true
+}

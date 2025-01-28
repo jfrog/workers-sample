@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "declaration": true,
+        "target": "es2017",
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": false,
+        "noFallthroughCasesInSwitch": false,
+        "allowJs": true
+    },
+    "include": [
+        "**/*.ts",
+        "node_modules/@types/**/*.d.ts"
+    ]
+}

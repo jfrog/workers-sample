@@ -1,0 +1,7 @@
+{
+    "repositories": [
+      { "release": "maven-releases", "snapshot": "maven-snapshots" },
+      { "release": "sample-releases", "snapshot": "sample-snapshots" }
+    ],
+    "dryRun": false
+  }
