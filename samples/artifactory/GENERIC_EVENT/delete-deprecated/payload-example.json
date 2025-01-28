@@ -1,8 +1,4 @@
 {
-    "repos": [ "example-repo-local" ],
-    "properties": {
-        "property1": 15,
-        "property2": 17
-    },
+    "repos": ["example-repo-local", "another-repo"],
     "dryRun": true
 }

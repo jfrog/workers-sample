@@ -1,0 +1,16 @@
+{
+    "name": "mavenSnapshotCleanupWhenRelease_afterCreate",
+    "description": "Deletes Maven SNAPSHOT artifacts when the release version is published",
+    "filterCriteria": {
+        "artifactFilterCriteria": {
+            "repoKeys": [
+                "example-repo-local"
+            ]
+        }
+    },
+    "secrets": {},
+    "sourceCodePath": "./worker.ts",
+    "action": "AFTER_CREATE",
+    "enabled": false,
+    "debug": true
+}
