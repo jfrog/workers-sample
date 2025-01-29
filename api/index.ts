@@ -74,13 +74,3 @@ export interface PlatformContext {
   clients: PlatformClients
   secrets: Record<string, string>
 }
-
-export * from './event/commons';
-export * from './event/AFTER_CREATE';
-export * from './event/AFTER_BUILD_INFO_SAVE';
-export * from './event/AFTER_DOWNLOAD';
-export * from './event/AFTER_MOVE';
-export * from './event/AFTER_DOWNLOAD';
-export * from './event/BEFORE_DOWNLOAD';
-export * from './event/BEFORE_UPLOAD';
-export * from './event/AFTER_CREATE';

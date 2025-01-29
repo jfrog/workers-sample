@@ -1,4 +1,5 @@
-import { PlatformContext, AfterCreateRequest, AfterCreateResponse } from 'jfrog-workers';
+import { PlatformContext } from 'jfrog-workers';
+import { AfterCreateRequest, AfterCreateResponse } from './types';
 
 
 const debRepositoryList = ["debian"]  //if something is created here...

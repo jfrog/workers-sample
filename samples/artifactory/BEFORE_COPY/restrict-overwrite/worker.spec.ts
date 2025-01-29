@@ -1,5 +1,6 @@
-import { PlatformContext, BeforeCopyRequest, PlatformClients, PlatformHttpClient, ActionStatus } from 'jfrog-workers';
+import { PlatformContext, PlatformClients, PlatformHttpClient } from 'jfrog-workers';
 import { createMock, DeepMocked } from '@golevelup/ts-jest';
+import { BeforeCopyRequest, ActionStatus } from './types';
 import runWorker from './worker';
 
 describe("restrict-overwrite tests", () => {

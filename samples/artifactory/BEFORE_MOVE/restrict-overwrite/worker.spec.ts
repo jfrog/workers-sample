@@ -1,10 +1,11 @@
-import { PlatformContext, BeforeCreateRequest, PlatformClients, PlatformHttpClient, ActionStatus } from 'jfrog-workers';
+import { PlatformContext, PlatformClients, PlatformHttpClient } from 'jfrog-workers';
 import { createMock, DeepMocked } from '@golevelup/ts-jest';
+import { BeforeMoveRequest, ActionStatus } from './types';
 import runWorker from './worker';
 
 describe("restrict-overwrite tests", () => {
     let context: DeepMocked<PlatformContext>;
-    let request: DeepMocked<BeforeCreateRequest>;
+    let request: DeepMocked<BeforeMoveRequest>;
 
     beforeEach(() => {
         context = createMock<PlatformContext>({
@@ -14,7 +15,7 @@ describe("restrict-overwrite tests", () => {
                 })
             })
         });
-        request = createMock<BeforeCreateRequest>({
+        request = createMock<BeforeMoveRequest>({
             metadata: { repoPath: { key: 'my-repo', path: 'artifact.txt' } }
         });
     })

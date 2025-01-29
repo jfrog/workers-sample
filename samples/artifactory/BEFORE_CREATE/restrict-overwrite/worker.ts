@@ -1,4 +1,5 @@
-import { PlatformContext, BeforeCreateRequest, BeforeCreateResponse, ActionStatus} from 'jfrog-workers';
+import { PlatformContext } from 'jfrog-workers';
+import { BeforeCreateRequest, BeforeCreateResponse, RepoPath, ActionStatus } from './types';
 
 
 export default async function (context: PlatformContext, data: BeforeCreateRequest): Promise<Partial<BeforeCreateResponse>> {

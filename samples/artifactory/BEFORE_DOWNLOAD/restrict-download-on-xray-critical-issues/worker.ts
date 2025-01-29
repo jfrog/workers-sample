@@ -1,4 +1,5 @@
-import { PlatformContext, BeforeDownloadRequest, BeforeDownloadResponse, DownloadStatus } from 'jfrog-workers';
+import { PlatformContext } from 'jfrog-workers';
+import { BeforeDownloadRequest, BeforeDownloadResponse, DownloadStatus } from './types';
 
 export default async (context: PlatformContext, data: BeforeDownloadRequest): Promise<BeforeDownloadResponse> => {
     const MAX_CRITICAL_SEC_ISSUES_ACCEPTED = 2;

@@ -1,5 +1,6 @@
-import { PlatformContext, AfterCreateRequest, PlatformClients, PlatformHttpClient } from 'jfrog-workers';
+import { PlatformContext, PlatformClients, PlatformHttpClient } from 'jfrog-workers';
 import { createMock, DeepMocked } from '@golevelup/ts-jest';
+import { AfterCreateRequest } from './types';
 import runWorker from './worker';
 
 describe("copy-deb-and-rpm tests", () => {
