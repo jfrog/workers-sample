@@ -1,5 +1,6 @@
-import { PlatformContext, AfterDownloadRequest, PlatformClients, PlatformHttpClient } from 'jfrog-workers';
+import { PlatformContext, PlatformClients, PlatformHttpClient } from 'jfrog-workers';
 import { createMock, DeepMocked } from '@golevelup/ts-jest';
+import { AfterDownloadRequest } from './types';
 import runWorker from './worker';
 
 describe("report-download-to-external-endpoint tests", () => {

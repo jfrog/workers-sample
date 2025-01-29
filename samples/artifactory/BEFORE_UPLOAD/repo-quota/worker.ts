@@ -1,4 +1,5 @@
-import { PlatformContext, BeforeUploadRequest, BeforeUploadResponse, UploadStatus } from 'jfrog-workers';
+import { PlatformContext } from 'jfrog-workers';
+import { BeforeUploadRequest, BeforeUploadResponse, UploadStatus } from './types';
 
 const REPO_QUOTA_PROPERTY = "repository.path.quota";
 

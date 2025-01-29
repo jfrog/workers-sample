@@ -1,4 +1,5 @@
-import { PlatformContext, BeforePropertyCreateRequest, BeforePropertyCreateResponse, BeforePropertyCreateStatus } from 'jfrog-workers';
+import { PlatformContext } from 'jfrog-workers';
+import { BeforePropertyCreateRequest, BeforePropertyCreateResponse, BeforePropertyCreateStatus } from './types';
 
 /**
  * This worker is used to intercept the creation of a property.

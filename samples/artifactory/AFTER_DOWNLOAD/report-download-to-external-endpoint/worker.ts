@@ -1,4 +1,5 @@
-import { PlatformContext, AfterDownloadRequest, AfterDownloadResponse } from 'jfrog-workers';
+import { PlatformContext } from 'jfrog-workers';
+import { AfterDownloadRequest, AfterDownloadResponse } from './types';
 
 export default async (context: PlatformContext, data: AfterDownloadRequest): Promise<AfterDownloadResponse> => {
     // MODIFY THOSE TWO CONSTANTS TO FIT YOUR NEEDS

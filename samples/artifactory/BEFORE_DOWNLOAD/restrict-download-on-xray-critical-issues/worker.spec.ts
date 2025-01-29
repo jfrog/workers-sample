@@ -1,5 +1,6 @@
-import { PlatformContext, BeforeDownloadRequest, PlatformClients, PlatformHttpClient, DownloadStatus } from 'jfrog-workers';
+import { PlatformContext, PlatformClients, PlatformHttpClient } from 'jfrog-workers';
 import { createMock, DeepMocked } from '@golevelup/ts-jest';
+import { BeforeDownloadRequest, DownloadStatus } from './types';
 import runWorker from './worker';
 
 describe("restrict-download-on-xray-critical-issues tests", () => {

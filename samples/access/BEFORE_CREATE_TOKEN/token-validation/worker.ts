@@ -1,10 +1,11 @@
-import { PlatformContext, BeforeCreateTokenRequest, BeforeCreateTokenResponse, CreateTokenStatus } from 'jfrog-workers';
+import { PlatformContext } from 'jfrog-workers';
+import { BeforeCreateTokenRequest, BeforeCreateTokenResponse, CreateTokenStatus } from './types';
 
 /**
  * This worker enforces 3 checks before allowing the creation of new tokens.
- *   - The number of tokens owned by the subject should not exceeds a specific count.
- *   - If it is a user token that is been created its expiry should not exceeds 1 month (the duration can be parameterized)
- *   - If it is a service token that is been created its expiry should not exceeds 1 year (the duration can be parameterized)
+ *   - The number of tokens owned by the subject should not exceed a specific count.
+ *   - If it is a user token that is being created its expiry should not exceed 1 month (the duration can be parameterized)
+ *   - If it is a service token that is being created its expiry should not exceed 1 year (the duration can be parameterized)
  */
 
 // The maximum number of tokens a user can have
