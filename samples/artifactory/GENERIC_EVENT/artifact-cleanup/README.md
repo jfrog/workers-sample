@@ -6,7 +6,7 @@ which is by default 1 month. It can be run manually from the REST API, using a w
 
 **Note:**
 
-If you're trying to clean Docker images, this plugin may lead to unexpectedly partial or broken cleans. It is recommended to instead use the [cleanDockerImages](https://github.com/jfrog/workers-sample/tree/master/cleanup/cleanDockerImages) plugin for this purpose.
+If you're trying to clean Docker images, this plugin may lead to unexpectedly partial or broken cleans. It is recommended to instead use the [cleanDockerImages](https://github.com/jfrog/workers-sample/tree/main/samples/artifactory/GENERIC_EVENT/clean-docker-images) plugin for this purpose.
 
 Expected JSON Payload
 ----------
