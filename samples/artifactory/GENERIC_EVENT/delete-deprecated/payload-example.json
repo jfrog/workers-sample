@@ -1,0 +1,4 @@
+{
+    "repos": ["example-repo-local", "another-repo"],
+    "dryRun": true
+}

@@ -1,0 +1,9 @@
+{
+    "name": "oldBuildCleanup",
+    "description": "Deletes all old builds that are older than buildNumber you provide",
+    "secrets": {},
+    "sourceCodePath": "./worker.ts",
+    "action": "GENERIC_EVENT",
+    "enabled": false,
+    "debug": true
+}
