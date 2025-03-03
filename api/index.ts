@@ -69,8 +69,16 @@ export interface PlatformClients {
   axios: Pick<AxiosInstance, 'get'|'put'|'post'|'delete'|'head'|'patch'|'request'>;
 }
 
+export interface PlatformSecrets {
+  /**
+   * Retrieves a secret by its key
+   * @param {string} secretKey - The secret key
+   */
+  get(secretKey: string): string;
+}
+
 export interface PlatformContext {
   platformToken: string
   clients: PlatformClients
-  secrets: Record<string, string>
+  secrets: PlatformSecrets
 }
