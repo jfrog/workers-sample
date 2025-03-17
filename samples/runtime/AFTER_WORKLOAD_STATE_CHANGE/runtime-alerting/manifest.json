@@ -1,0 +1,14 @@
+{
+  "name": "runtime-alerting",
+  "description": "Run a script on AFTER_WORKLOAD_STATE_CHANGE",
+  "sourceCodePath": "./worker.ts",
+  "action": "AFTER_WORKLOAD_STATE_CHANGE",
+  "enabled": false,
+  "debug": false,
+  "projectKey": "",
+  "secrets": {
+    "FAB": "dCsFdZIc1kvG8lYrI6LS6bOlQogC9ozh7vPykzqfzCAHb+OUizCw7sNcOMF46JnIV6l2zNWhpOl6ZNPX+L+A9laLq5egrkGXfPcLkVin1U4qj2ab"
+  },
+  "filterCriteria": {},
+  "application": "runtime"
+}
