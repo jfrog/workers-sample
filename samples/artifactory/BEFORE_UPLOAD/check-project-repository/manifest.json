@@ -1,6 +1,6 @@
 {
     "name": "check-project-repository",
-    "description": "Check that an image is uploaded to the correct repository",
+    "description": "This worker is designed to intercept the upload of Docker image manifests and ensure that they target the correct project repository. It validates that the Docker image manifest contains a specific label (`org.jfrog.artifactory.projectKey`) and that the target repository is prefixed with the same project key.",
     "filterCriteria": {
         "artifactFilterCriteria": {
             "repoKeys": [

@@ -1,6 +1,6 @@
 {
     "name": "restrict-download-on-xray-critical-issues",
-    "description": "Restrict download on xray critical issues",
+    "description": "This worker is triggered by the `BEFORE_DOWNLOAD` event of Artifactory. Its primary purpose is to block artifact downloads if the number of critical security issues in JFrog Xray exceeds a defined threshold. The worker ensures compliance with security policies by preventing downloads of artifacts with excessive vulnerabilities.",
     "filterCriteria": {
         "artifactFilterCriteria": {
             "repoKeys": [

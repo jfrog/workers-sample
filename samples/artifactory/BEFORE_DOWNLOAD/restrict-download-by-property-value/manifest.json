@@ -1,6 +1,6 @@
 {
     "name": "restrict-download-by-property-value",
-    "description": "Restrict download by property value",
+    "description": "This worker is triggered by the `BEFORE_DOWNLOAD` event of Artifactory. Its primary purpose is to block artifact downloads if the artifact contains certain forbidden properties with restricted values. This ensures compliance with organizational policies by preventing downloads of restricted artifacts.",
     "filterCriteria": {
         "artifactFilterCriteria": {
             "repoKeys": [

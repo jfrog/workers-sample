@@ -1,6 +1,6 @@
 {
     "name": "artifact-cleanup",
-    "description": "Artifact cleanup",
+    "description": "This worker code deletes all artifacts that have not been downloaded for the past 'n time units',which is by default 1 month. It can be run manually from the REST API, using a worker generic event.",
     "secrets": {},
     "sourceCodePath": "./worker.ts",
     "action": "GENERIC_EVENT",

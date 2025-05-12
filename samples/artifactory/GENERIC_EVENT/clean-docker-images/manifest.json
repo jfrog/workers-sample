@@ -1,6 +1,6 @@
 {
     "name": "clean-docker-images",
-    "description": "Clean docker images",
+    "description": "This worker script is designed to clean Docker repositories hosted in Artifactory based on configurable cleanup policies. It is useful for managing storage and maintaining repository hygiene.",
     "secrets": {},
     "sourceCodePath": "./worker.ts",
     "action": "GENERIC_EVENT",

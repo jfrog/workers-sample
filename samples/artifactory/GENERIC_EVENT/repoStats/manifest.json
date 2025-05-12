@@ -1,6 +1,6 @@
 {
     "name": "repoStats",
-    "description": "Repo Stats",
+    "description": "This Worker displays certain statistics about requested files.",
     "secrets": {},
     "sourceCodePath": "./worker.ts",
     "action": "GENERIC_EVENT",

@@ -1,6 +1,6 @@
 {
     "name": "repo-quota",
-    "description": "Repo quota",
+    "description": "The 'Artifactory Storage Quota Worker' is a script designed to enforce storage limits for repository paths. It allows administrators to configure quotas for artifact storage under specific paths within a repository. If the combined size of existing artifacts and a new upload exceeds the defined quota, the upload is rejected.",
     "filterCriteria": {
         "artifactFilterCriteria": {
             "repoKeys": [
