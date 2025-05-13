@@ -1,6 +1,6 @@
 {
     "name": "report-download-to-external-endpoint",
-    "description": "Report download to external endpoint",
+    "description": "This worker listens to the `AFTER_DOWNLOAD` event in JFrog Artifactory and notifies an external endpoint when a file is downloaded. The worker logs the artifact's details, the repository, and the user responsible for the download.",
     "filterCriteria": {
         "artifactFilterCriteria": {
             "repoKeys": [

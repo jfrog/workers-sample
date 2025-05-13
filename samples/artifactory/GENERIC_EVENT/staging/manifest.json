@@ -1,0 +1,9 @@
+{
+    "name": "staging-strategy-calculator",
+    "description": "This JFrog Worker calculates the staging strategy for Artifactory builds based on configurable strategies. The worker supports multiple strategies such as 'Gradle', 'Simple Maven', and 'Detailed Maven'. It fetches build information from Artifactory and determines the appropriate release version, target repository, tagging details, and more.",
+    "secrets": {},
+    "sourceCodePath": "./worker.ts",
+    "action": "GENERIC_EVENT",
+    "enabled": false,
+    "debug": true
+}

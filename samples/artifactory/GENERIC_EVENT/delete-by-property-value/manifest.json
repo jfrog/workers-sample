@@ -1,6 +1,6 @@
 {
     "name": "delete-by-property-value",
-    "description": "Delete by property value",
+    "description": "This worker is designed to delete artifacts from specified repositories based on a property and its value. It allows you to define thresholds for properties and delete artifacts with property values below these thresholds. The worker also supports a dry-run mode to simulate the operation without making any changes.",
     "secrets": {},
     "sourceCodePath": "./worker.ts",
     "action": "GENERIC_EVENT",

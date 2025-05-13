@@ -1,6 +1,6 @@
 {
     "name": "restrict-overwrite",
-    "description": "Restrict overwrite",
+    "description": "This worker script ensures that overwrites are restricted during the upload of artifacts to configured repositories in JFrog Artifactory. The worker validates if an artifact already exists at the target location and stops the upload process if the file or folder is present.",
     "filterCriteria": {
         "artifactFilterCriteria": {
             "repoKeys": [

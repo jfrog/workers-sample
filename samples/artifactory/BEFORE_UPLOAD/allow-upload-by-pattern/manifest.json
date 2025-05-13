@@ -1,6 +1,6 @@
 {
     "name": "allow-upload-by-pattern",
-    "description": "Allow upload by pattern",
+    "description": "This worker script ensures that artifact uploads are allowed only if the target path matches a predefined pattern. This pattern is specified using a regular expression (`authorizedPathRegEx`). The script validates the repository path (`repoPath`) and blocks uploads that do not comply with the pattern.",
     "filterCriteria": {
         "artifactFilterCriteria": {
             "repoKeys": [

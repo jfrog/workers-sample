@@ -1,6 +1,6 @@
 {
     "name": "property-creation-permission",
-    "description": "Validate property creation permission",
+    "description": "This worker is triggered by the `BEFORE_PROPERTY_CREATE` event in JFrog Artifactory. Its primary purpose is to enforce a policy where only users with admin privileges can create artifact properties.",
     "secrets": {},
     "filterCriteria": {
         "artifactFilterCriteria": {

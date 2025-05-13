@@ -1,6 +1,6 @@
 {
   "name": "copy-deb-and-rpm",
-  "description": "Run a script on AFTER_CREATE",
+  "description": "This worker script is designed to handle package copy operations between repositories in a JFrog Artifactory environment. It monitors specified repositories for newly created `.deb` and `.rpm` files, parses the file paths using a predefined layout, and copies the files to designated target repositories.",
   "version": "1.0.1",
   "scripts": {
     "deploy": "jf worker deploy",

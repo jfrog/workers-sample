@@ -1,6 +1,6 @@
 {
     "name": "restrict-overwrite",
-    "description": "Restrict overwrite",
+    "description": "The \"Restrict Overwrite: Before Create\" worker script enforces immutability by preventing overwrites of artifacts during the \"create\" operation in JFrog Artifactory. It ensures that artifacts cannot be accidentally replaced, maintaining consistency and integrity across deployments.",
     "filterCriteria": {
         "artifactFilterCriteria": {
             "repoKeys": [

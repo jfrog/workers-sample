@@ -1,6 +1,6 @@
 {
     "name": "resctrict-download-if-no-xray-scan-since",
-    "description": "Resctrict download if no xray scan since",
+    "description": "This worker is triggered by the `BEFORE_DOWNLOAD` event of Artifactory. Its primary purpose is to restrict downloads of artifacts that have not undergone an Xray scan within a specified threshold duration. This ensures artifacts comply with security policies by enforcing timely scans.",
     "filterCriteria": {
         "artifactFilterCriteria": {
             "repoKeys": [

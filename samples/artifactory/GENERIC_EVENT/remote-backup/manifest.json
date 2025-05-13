@@ -1,6 +1,6 @@
 {
     "name": "remote-backup",
-    "description": "Remote backup",
+    "description": "This worker copies files from a remote cache to a local 'backup' repository. This ensures that cached artifacts are still available, even after they're removed from the cache.",
     "secrets": {},
     "sourceCodePath": "./worker.ts",
     "action": "GENERIC_EVENT",

@@ -1,6 +1,6 @@
 {
     "name": "delete-empty-dirs",
-    "description": "Delete empty dirs",
+    "description": "This worker deletes all empty directories found inside any of the given set of paths in your Artifactory repositories. The worker traverses specified directories recursively, checking for empty directories, and deletes them if they are found.",
     "secrets": {},
     "sourceCodePath": "./worker.ts",
     "action": "GENERIC_EVENT",
