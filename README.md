@@ -17,7 +17,17 @@ We have created these TypeScript samples based on [Artifactory User Plugin Sampl
 
 Please submit a pull request if you have other valuable samples.
 
-The samples are located under the _samples_ directory with the following layout _\<APPLICATION>/\<EVENT_TYPE>/\<worker>_.
+The samples are located under the _samples_ directory with the following layout:
+```
+<REPO_ROOT>/samples
+    /<PRODUCT_NAME> // Must match the product name used in the action metadata
+	    /<ACTION>
+		    /<WORKER_NAME>
+                /README.md // (optional) The Worker doc
+                /worker.ts // The Worker code
+                /manifest.json // Metadata of the Worker
+                /payload-example.json // (optional) Defines an example of the event’s payload content.
+```
 
 Each sample folder has been generated with the [JFrog CLI](https://docs.jfrog-applications.jfrog.io/jfrog-applications/jfrog-cli).
 
