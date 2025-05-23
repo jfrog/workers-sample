@@ -31,7 +31,7 @@ async function copyAction(context: PlatformContext, repoPath: RepoPath, list: st
             const dstPath = `${layoutMatch.groups.module}/${newName}`;
             try {
                 console.info(`Copying package: ${repoPath.key}/${repoPath.path} to ${yumRepoCopy}/${dstPath}`);
-                const res = await retryOnStatus<IPlatformHttpResponse>(() => context.clients.platformHttp.post(`/artifactory/api/copy/${repoPath.key}/${repoPath.path}?to=/${yumRepoCopy}/${dstPath}`), [404, 409], 5, 400);
+                const res = await retryOnStatus<IPlatformHttpResponse>(context, () => context.clients.platformHttp.post(`/artifactory/api/copy/${repoPath.key}/${repoPath.path}?to=/${yumRepoCopy}/${dstPath}`), [404, 409], 5, 400);
                 if (res.status === 200) {
                     console.info("Copy success");
                 } else {
@@ -46,13 +46,13 @@ async function copyAction(context: PlatformContext, repoPath: RepoPath, list: st
             const dstPath = `pool/${layoutMatch.groups.module}/${newName}`;
             try {
                 console.warn("Updating Debian package properties");
-                await retryOnStatus<IPlatformHttpResponse>(() => updateProperties(context, repoPath), 404, 5, 400);
+                await retryOnStatus<IPlatformHttpResponse>(context, () => updateProperties(context, repoPath), 404, 5, 400);
             } catch (e) {
                 console.warn(`Could not update properties for ${repoPath.key}/${repoPath.path}: ` + e.message);
             }
             try {
                 console.info(`Copying package: ${repoPath.key}/${repoPath.path} to ${debRepoCopy}/${dstPath}`);
-                const res = await retryOnStatus<IPlatformHttpResponse>(() => context.clients.platformHttp.post(`/artifactory/api/copy/${repoPath.key}/${repoPath.path}?to=/${debRepoCopy}/${dstPath}`), [404, 409], 5, 400);
+                const res = await retryOnStatus<IPlatformHttpResponse>(context, () => context.clients.platformHttp.post(`/artifactory/api/copy/${repoPath.key}/${repoPath.path}?to=/${debRepoCopy}/${dstPath}`), [404, 409], 5, 400);
                 if (res.status === 200) {
                     console.info("Copy success");
                 } else {
@@ -90,7 +90,7 @@ function renameTimestampToSnapshot(repoPath: RepoPath): string {
 }
 
 // runs the function task and retries maximum nTimes if it fails with one of the given status. The function will wait for a given time defined by intervalMillis between each attempt
-async function retryOnStatus<T>(task: () => Promise<T>, status: number | number[], nTimes: number, intervalMillis: number): Promise<T> {
+async function retryOnStatus<T>(context: PlatformContext, task: () => Promise<T>, status: number | number[], nTimes: number, intervalMillis: number): Promise<T> {
     let currentTrial = 0;
     let success = false;
     let lastStatusCode = undefined;
@@ -107,7 +107,7 @@ async function retryOnStatus<T>(task: () => Promise<T>, status: number | number[
                 lastStatusCode = e.status;
                 break;
             }
-            wait(intervalMillis);
+            context.wait(intervalMillis);
         }
     }
     if (!success) {
@@ -118,8 +118,4 @@ async function retryOnStatus<T>(task: () => Promise<T>, status: number | number[
         }
     }
     return resp;
-}
-
-function wait(millis: number) {
-    Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, millis);
 }
