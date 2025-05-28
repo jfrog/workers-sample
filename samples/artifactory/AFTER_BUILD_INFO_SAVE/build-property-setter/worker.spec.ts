@@ -1,6 +1,6 @@
-import { PlatformContext, PlatformClients, PlatformHttpClient, Status } from 'jfrog-workers';
-import { createMock, DeepMocked } from '@golevelup/ts-jest';
-import { AfterBuildInfoSaveRequest } from './types';
+import {PlatformContext, PlatformClients, PlatformHttpClient, Status} from 'jfrog-workers';
+import {createMock, DeepMocked} from '@golevelup/ts-jest';
+import {AfterBuildInfoSaveRequest} from './types';
 import runWorker from './worker';
 
 describe("build-property-setter worker", () => {
@@ -13,10 +13,10 @@ describe("build-property-setter worker", () => {
                 platformHttp: createMock<PlatformHttpClient>({
                     get: jest.fn().mockResolvedValue({
                         status: 200,
-                        data: { buildsNumbers: [], buildInfo: { modules: [] } }
+                        data: {buildsNumbers: [], buildInfo: {modules: []}}
                     }),
-                    put: jest.fn().mockResolvedValue({ status: 204 }),
-                    delete: jest.fn().mockResolvedValue({ status: 204 })
+                    put: jest.fn().mockResolvedValue({status: 204}),
+                    delete: jest.fn().mockResolvedValue({status: 204})
                 })
             })
         });
@@ -32,7 +32,7 @@ describe("build-property-setter worker", () => {
         // Simulate no previous builds
         (context.clients.platformHttp.get as jest.Mock).mockResolvedValueOnce({
             status: 200,
-            data: { buildsNumbers: [], buildInfo: { modules: [] } }
+            data: {buildsNumbers: [], buildInfo: {modules: []}}
         });
 
         await expect(runWorker(context, request)).resolves.toEqual(
@@ -47,8 +47,8 @@ describe("build-property-setter worker", () => {
         (context.clients.platformHttp.get as jest.Mock).mockResolvedValueOnce({
             status: 200,
             data: {
-                buildsNumbers: [{ uri: '/12356' }],
-                buildInfo: { modules: [] }
+                buildsNumbers: [{uri: '/12356'}],
+                buildInfo: {modules: []}
             }
         });
 
@@ -60,7 +60,13 @@ describe("build-property-setter worker", () => {
                         {
                             id: 'module1',
                             artifacts: [
-                                { name: 'artifact1.jar', sha1: 'abc', md5: 'def', type: 'jar', remotePath: 'repo/path/artifact1.jar' }
+                                {
+                                    name: 'artifact1.jar',
+                                    sha1: 'abc',
+                                    md5: 'def',
+                                    type: 'jar',
+                                    remotePath: 'repo/path/artifact1.jar'
+                                }
                             ]
                         }
                     ]
@@ -77,7 +83,7 @@ describe("build-property-setter worker", () => {
         // Mock: No previous builds
         (context.clients.platformHttp.get as jest.Mock).mockResolvedValueOnce({
             status: 200,
-            data: { buildsNumbers: [], buildInfo: { modules: [] } }
+            data: {buildsNumbers: [], buildInfo: {modules: []}}
         });
         // Mock: Current build details with one artifact
         (context.clients.platformHttp.get as jest.Mock).mockResolvedValueOnce({
@@ -115,8 +121,8 @@ describe("build-property-setter worker", () => {
         (context.clients.platformHttp.get as jest.Mock).mockResolvedValueOnce({
             status: 200,
             data: {
-                buildsNumbers: [{ uri: '/12356' }],
-                buildInfo: { modules: [] }
+                buildsNumbers: [{uri: '/12356'}],
+                buildInfo: {modules: []}
             }
         });
 
@@ -125,13 +131,14 @@ describe("build-property-setter worker", () => {
             data: {
                 buildInfo: {
                     modules: [
-                        { id: 'module1' } // no artifacts property
+                        {id: 'module1'} // no artifacts property
                     ]
                 }
             }
         });
 
-        const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => { });
+        const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {
+        });
         await runWorker(context, request);
         expect(consoleWarnSpy).toHaveBeenCalledWith("A module was skipped as no artifact array was found");
         consoleWarnSpy.mockRestore();
@@ -146,7 +153,7 @@ describe("build-property-setter worker", () => {
     it('should return fail status if set property API call fails', async () => {
         (context.clients.platformHttp.get as jest.Mock).mockResolvedValueOnce({
             status: 200,
-            data: { buildsNumbers: [], buildInfo: { modules: [] } }
+            data: {buildsNumbers: [], buildInfo: {modules: []}}
         });
         // Mock: Current build details with one artifact
         (context.clients.platformHttp.get as jest.Mock).mockResolvedValueOnce({
@@ -191,8 +198,8 @@ describe("build-property-setter worker", () => {
         (context.clients.platformHttp.get as jest.Mock).mockResolvedValueOnce({
             status: 200,
             data: {
-                buildsNumbers: [{ uri: '/12356' }],
-                buildInfo: { modules: [] }
+                buildsNumbers: [{uri: '/12356'}],
+                buildInfo: {modules: []}
             }
         });
 

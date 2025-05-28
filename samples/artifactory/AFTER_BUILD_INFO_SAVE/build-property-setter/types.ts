@@ -53,6 +53,6 @@ export interface AfterBuildInfoSaveRequest {
 }
 
 export interface ArtifactPathInfo {
-  repo: string;
-  path: string;
+    repo: string;
+    path: string;
 }
