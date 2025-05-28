@@ -1,0 +1,16 @@
+{
+    "name": "build-property-setter",
+    "description": "Removes 'latest=true' from previous build artifacts and sets it for current build artifacts after build info is saved.",
+    "filterCriteria": {
+        "artifactFilterCriteria": {
+            "repoKeys": [
+                "example-repo-local"
+            ]
+        }
+    },
+    "secrets": {},
+    "sourceCodePath": "./worker.ts",
+    "action": "AFTER_BUILD_INFO_SAVE",
+    "enabled": false,
+    "debug": true
+}
