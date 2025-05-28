@@ -1,0 +1,14 @@
+{
+  "filePattern": "example.txt",
+  "srcRepo": "libs-release-local",
+  "archiveRepo": "archive-repo",
+  "lastModifiedDays": 30,
+  "lastUpdatedDays": 0,
+  "createdDays": 1,
+  "lastDownloadedDays": 60,
+  "ageDays": 30,
+  "excludePropertySet": "keeper:true",
+  "includePropertySet": "archive:true",
+  "archiveProperty": "archived.timestamp",
+  "numKeepArtifacts": 5
+}
