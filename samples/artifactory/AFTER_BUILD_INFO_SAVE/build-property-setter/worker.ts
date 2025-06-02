@@ -1,7 +1,7 @@
 import {PlatformContext, Status} from "jfrog-workers";
 import {AfterBuildInfoSaveRequest, ArtifactPathInfo} from "./types";
 
-export default async function oldBuildCleanup(
+export default async function setBuildProperty(
     context: PlatformContext,
     data: AfterBuildInfoSaveRequest
 ): Promise<{ message: string; executionStatus: Status }> {
