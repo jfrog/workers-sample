@@ -1,6 +1,6 @@
 {
   "name": "jfrog-workers",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "JFrog workers interfaces",
   "homepage": "https://github.com/jfrog/workers-sample",
   "contributors": [
