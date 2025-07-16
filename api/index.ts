@@ -81,4 +81,10 @@ export interface PlatformContext {
   platformToken: string
   clients: PlatformClients
   secrets: PlatformSecrets
+
+  /**
+   * Pauses the execution of the current worker for a specified duration.
+   * @param {string} timeoutMillis - The duration in milliseconds to pause the execution.
+   */
+  wait(timeoutMillis: number): Promise<void>;
 }
