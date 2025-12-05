@@ -65,7 +65,13 @@ export interface PlatformHttpClient {
 }
 
 export interface PlatformClients {
-  platformHttp: PlatformHttpClient;
+  /**
+   * HTTP client to perform requests to your JFrog platform
+   */
+  platformHttp: PlatformHttpClient
+  /**
+   * HTTP client (axios) to perform requests to the outside
+   */
   axios: Pick<AxiosInstance, 'get'|'put'|'post'|'delete'|'head'|'patch'|'request'>;
 }
 
@@ -77,14 +83,101 @@ export interface PlatformSecrets {
   get(secretKey: string): string;
 }
 
-export interface PlatformContext {
-  platformToken: string
-  clients: PlatformClients
-  secrets: PlatformSecrets
+export interface PlatformProperties {
+  /**
+   * Retrieves a Worker's property by its key
+   * @param {string} propertyKey - The property key
+   */
+  get(propertyKey: string): string;
+}
+
+export interface StateManager {
+  /**
+   * Retrieves a value from the state by its key
+   * @param {string} key - The key of the value to retrieve
+   */
+  get(key: string): string;
 
   /**
-   * Pauses the execution of the current worker for a specified duration.
-   * @param {string} timeoutMillis - The duration in milliseconds to pause the execution.
+   * Sets a value in the state by its key
+   * @param {string} key - The key of the value to set
+   * @param {any} value - The value to set. If the value is not a string, it will be converted to a JSON string.
    */
-  wait(timeoutMillis: number): Promise<void>;
+  set(key: string, value: any): void;
+
+  /**
+   * Checks if a value exists in the state by its key
+   * @param {string} key - The key of the value to check
+   * @returns {boolean} - True if the value exists, false otherwise
+   */
+  has(key: string): boolean;
+
+  /**
+   * Deletes a value from the state by its key.
+   * If it does not exist, it does nothing.
+   * @param {string} key - The key of the value to delete
+   */
+  delete(key: string): void;
+
+  /**
+   * Clears the entire state
+   */
+  clear(): void;
+
+  /**
+   * Returns a copy of the entire state
+   */
+  getAll(): Record<string, string>;
+}
+
+export interface PlatformHttpClientError {
+  /**
+   * The reason of the error
+   */
+  message: string;
+
+  /**
+   * Http status
+   */
+  status: number;
+}
+
+export interface PlatformContext {
+    /**
+     * HTTP clients to perform requests to your JFrog platform or to the outside
+     */
+    clients: PlatformClients;
+    /**
+     * Utility to get access to your Worker's secrets
+     */
+    secrets: PlatformSecrets;
+    /**
+     * Utility to get access to your Worker's properties
+     */
+    properties: PlatformProperties;
+    /**
+     * The base URL of the JFrog platform
+     */
+    baseUrl: string;
+    /**
+     * Token used when communicating with the JFrog platform
+     */
+    platformToken: string;
+    /**
+     * State manager to store and retrieve state for this Worker between executions.
+     * NOTE: This state is not safe against concurrent executions of the same Worker.
+     * NOTE: The state will not be saved in case of execution failure.
+     * NOTE: The state is limited in size and number of items. Check the Worker documentation for more details.
+     */
+    state: StateManager;
+    /**
+     * Will wait for the number of millisecond.
+     * The waiting time is limited by the execution time of the function.
+     * @param {number} delayMs - The number of milliseconds to wait
+     */
+    wait(delayMs: number): Promise<void>;
+    /**
+     * Will return the remaining execution time in milliseconds
+     */
+    getRemainingExecutionTime(): number;
 }
