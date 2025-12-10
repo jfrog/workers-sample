@@ -3,7 +3,7 @@ import { BeforeDownloadRequest, BeforeDownloadResponse, DownloadStatus } from '.
 
 export default async (context: PlatformContext, data: BeforeDownloadRequest): Promise<BeforeDownloadResponse> => {
     const MAX_CRITICAL_SEC_ISSUES_ACCEPTED = 2;
-    const isXrayAvailable = await checkIfXrayAvailable();
+    const isXrayAvailable = await checkIfXrayAvailable(context);
     if (!isXrayAvailable) {
         return {
             status: DownloadStatus.DOWNLOAD_WARN,
@@ -70,20 +70,18 @@ export default async (context: PlatformContext, data: BeforeDownloadRequest): Pr
         message,
         headers: {} // This can be populated if response headers are required to be added/overriden.
     }
+}
 
-
-    async function checkIfXrayAvailable(): Promise<boolean> {
-        let response;
-        try {
-            response = await context.clients.platformHttp.get('/xray/api/v1/system/ping');
-            if (response.data.status !== "pong") {
-                throw new Error("Xray not available");
-            }
-            return true;
-        } catch (error) {
-            console.log(`Encountered error ${error.message} while checking for xray readiness. Allowing download with a warning`);
-            return false;
+async function checkIfXrayAvailable(context: PlatformContext): Promise<boolean> {
+    let response;
+    try {
+        response = await context.clients.platformHttp.get('/xray/api/v1/system/ping');
+        if (response.data.status !== "pong") {
+            throw new Error("Xray not available");
         }
-
+        return true;
+    } catch (error) {
+        console.log(`Encountered error ${error.message} while checking for xray readiness. Allowing download with a warning`);
+        return false;
     }
 }

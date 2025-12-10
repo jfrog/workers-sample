@@ -97,10 +97,7 @@ async function simpleTraverse(
         } else if ((maxCount = await getMaxCountForDelete(repositories, childItem)) > 0) {
             console.debug(`Adding to IMAGES MAP: ${parentRepoPath.path}`)
             const parentId = parentRepoPath.parent.id
-            let oldMax = maxCount
-            if (parentId in imagesCount) {
-                oldMax = imagesCount.get(parentId)
-            }
+            let oldMax = imagesCount.get(parentId) || 0
             imagesCount.set(parentId, maxCount > oldMax ? maxCount : oldMax);
             if (!imagesPathMap.has(parentId)) {
                 imagesPathMap.set(parentId, []);
@@ -121,7 +118,7 @@ async function getLastDownloadedDate(repositories: Repositories, itemPath: RepoP
         lastDownloadedDate = itemStats.lastDownloaded
         console.debug(`lastDownloadedDate: STAT lastDownloadedDate =${lastDownloadedDate} (${new Date(lastDownloadedDate)})`)
     } else {
-        console.log("NO STATS for ${itemPath.id} found")
+        console.log(`NO STATS for ${itemPath.id} found`)
     }
     return lastDownloadedDate
 }
@@ -179,14 +176,14 @@ async function getMaxCountForDelete(repositories: Repositories, item: RepoItemIn
         prop = Number.parseInt(propStr);
     } catch (x) {
         console.log(`PROPERTY maxCount is not a number: ${x.message}`);
-        return false;
+        return 0;
     }
 
     return Math.max(prop, 0)
 }
 
 function joinPath(l: string, r: string): string {
-    return l.replaceAll(/^(.*)\/$/g, "$1") + '/' + r.replaceAll(/^\/(.*)$/g, "$1");
+    return l.replace(/^(.*)\/$/g, "$1") + '/' + r.replace(/^\/(.*)$/g, "$1");
 }
 
 export function buildRepoPath(repo: string, path: string): RepoPath {

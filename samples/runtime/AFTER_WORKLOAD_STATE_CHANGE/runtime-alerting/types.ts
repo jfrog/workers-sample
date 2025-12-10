@@ -53,3 +53,5 @@ export interface BuildInfo {
   build_number: string
   build_repository: string
 }
+
+export type AfterWorkloadStateChangeRequest = WorkloadChangedEvent;

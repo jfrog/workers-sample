@@ -68,7 +68,7 @@ async function getArtifactsSize(context: PlatformContext, repoKey: string, path:
 }
 
 function joinPath(l: string, r: string): string {
-    return l.replaceAll(/^(.*)\/$/g, "$1") + '/' + r.replaceAll(/^\/(.*)$/g, "$1");
+    return l.replace(/^(.*)\/$/g, "$1") + '/' + r.replace(/^\/(.*)$/g, "$1");
 }
 
 function getParentPath(path: string) {

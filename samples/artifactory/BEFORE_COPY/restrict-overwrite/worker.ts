@@ -34,6 +34,7 @@ async function getExistingItemInfo(context: PlatformContext, repoPath: RepoPath)
     if (aqlResult.length) {
         return { isFolder: aqlResult[0].type === 'folder' };
     }
+    return undefined;
 }
 
 async function runAql(context: PlatformContext, query: string) {

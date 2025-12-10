@@ -47,7 +47,7 @@ async function deleteEmptyDirsRecursively(repositories: Repositories, repoPath: 
 }
 
 function joinPath(l: string, r: string): string {
-    return l.replaceAll(/^(.*)\/$/g, "$1") + '/' + r.replaceAll(/^\/(.*)$/g, "$1");
+    return l.replace(/^(.*)\/$/g, "$1") + '/' + r.replace(/^\/(.*)$/g, "$1");
 }
 
 export function buildRepoPath(path: string, repo?: string): RepoPath {
@@ -93,7 +93,7 @@ class Repositories {
         console.debug(`GetChildren: ${repoPath.path}`)
         const res = await this.ctx.clients.platformHttp.get(`/artifactory/api/storage/${repoPath.path}?list&deep=0&listFolders=1&mdTimestamps=0&includeRoot=0`);
         const { files } = res.data;
-        const children = [];
+        const children: RepoItemInfo[] = [];
         for (const { uri }  of (files || [])) {
             if (uri) {
                 console.log(`repoPath='${repoPath.path}', childUri=${uri}`);

@@ -2,9 +2,10 @@ import { PlatformContext } from 'jfrog-workers';
 import { BeforeDownloadRequest, BeforeDownloadResponse, DownloadStatus } from './types';
 
 export default async (context: PlatformContext, data: BeforeDownloadRequest): Promise<BeforeDownloadResponse> => {
-    const thresholdDate = new Date(new Date().getUTCDate() - 7);
+    const thresholdDate = new Date();
+    thresholdDate.setUTCDate(thresholdDate.getUTCDate() - 7);
     const thresholdDays = 2;
-    const isXrayAvailable = await checkIfXrayAvailable();
+    const isXrayAvailable = await checkIfXrayAvailable(context);
     if (!isXrayAvailable) {
         return {
             status: DownloadStatus.DOWNLOAD_WARN,
@@ -35,7 +36,7 @@ export default async (context: PlatformContext, data: BeforeDownloadRequest): Pr
                         "status": string,
                         "time": string
                     }
-                }
+                },
                 "size": string,
                 "violations": number,
                 "created": string,
@@ -44,7 +45,7 @@ export default async (context: PlatformContext, data: BeforeDownloadRequest): Pr
             }
         ],
         "offset": number
-    } = null;
+    } | null = null;
 
     try {
         const artifactName = data.metadata.repoPath.path.substr(data.metadata.repoPath.path.lastIndexOf('/') + 1);
@@ -53,7 +54,7 @@ export default async (context: PlatformContext, data: BeforeDownloadRequest): Pr
         const res = await context.clients.platformHttp.get(`/xray/api/v1/artifacts?repo=${repoKey}&search=${artifactName}&num_of_rows=1`);
         responseData = res.data;
 
-        if (res.status === 200) {
+        if (res.status === 200 && responseData) {
             // console.log(responseData);
             console.log(responseData.data);
             const lastScanDetails = responseData.data[0].scans_status.overall;
@@ -101,25 +102,23 @@ export default async (context: PlatformContext, data: BeforeDownloadRequest): Pr
         message,
         headers: {} // This can be populated if response headers are required to be added/overriden.
     }
+}
 
-
-    async function checkIfXrayAvailable(): Promise<boolean> {
-        let response;
-        try {
-            response = await context.clients.platformHttp.get('/xray/api/v1/system/ping');
-            if (response.data.status !== "pong") {
-                throw new Error("Xray not available");
-            }
-            return true;
-        } catch (error) {
-            console.log(`Encountered error ${error.message} while checking for xray readiness. Allowing download with a warning`);
-            return false;
+async function checkIfXrayAvailable(context: PlatformContext): Promise<boolean> {
+    let response;
+    try {
+        response = await context.clients.platformHttp.get('/xray/api/v1/system/ping');
+        if (response.data.status !== "pong") {
+            throw new Error("Xray not available");
         }
-
+        return true;
+    } catch (error) {
+        console.log(`Encountered error ${error.message} while checking for xray readiness. Allowing download with a warning`);
+        return false;
     }
+}
 
-    function differenceInDays(lastScanDate: Date, currentDate: Date): number {
-        const differenceInTime = currentDate.getTime() - lastScanDate.getTime();
-        return Math.round(differenceInTime / (1000 * 3600 * 24));
-    }
+function differenceInDays(lastScanDate: Date, currentDate: Date): number {
+    const differenceInTime = currentDate.getTime() - lastScanDate.getTime();
+    return Math.round(differenceInTime / (1000 * 3600 * 24));
 }

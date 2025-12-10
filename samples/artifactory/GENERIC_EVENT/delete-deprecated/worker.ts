@@ -40,11 +40,11 @@ async function fileCleanup(context: PlatformContext, propertyName: string, prope
         const keyValue = await repositories.getProperty(itemPath, propertyName)
         console.debug(`For ${itemPath}, ${propertyName}=${propertyValue}`);
         if (keyValue !== undefined && keyValue.toString() === propertyValue) {
-            console.log(`Deleting ${itemPath} (dryRun: $dryRun)`);
+            console.log(`Deleting ${itemPath} (dryRun: ${dryRun})`);
             if (!dryRun) {
                 await repositories.delete(itemPath);
             }
-            console.log(`Deleted ${itemPath} (dryRun: $dryRun)`);
+            console.log(`Deleted ${itemPath} (dryRun: ${dryRun})`);
             totalDeleted++
         }
     }
@@ -72,6 +72,7 @@ class Repositories {
                 return propertyValue;
             }
         }
+        return undefined;
     }
 
     async delete(itemPath: string) {
