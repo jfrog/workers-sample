@@ -1,5 +1,6 @@
 import { PlatformContext } from 'jfrog-workers';
 import { AfterDownloadRequest, AfterDownloadResponse } from './types';
+import { AxiosRequestConfig } from 'axios';
 
 export default async (context: PlatformContext, data: AfterDownloadRequest): Promise<AfterDownloadResponse> => {
     // MODIFY THOSE TWO CONSTANTS TO FIT YOUR NEEDS

@@ -9,6 +9,6 @@
   "author": "Shashank Taliwal",
   "license": "ISC",
   "dependencies": {
-    "jfrog-workers": "^0.5.0"
+    "jfrog-workers": "^0.8.0"
   }
 }

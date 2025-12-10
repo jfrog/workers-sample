@@ -53,12 +53,12 @@ export default async function getStagingStrategy(
       message: "Successfully calculated staging strategy",
       data: responseData,
     };
-  } catch (error) {
+  } catch (error: any) {
     console.log(error);
     return {
       status: 400,
       message: `Got error: ${error.message}`,
-      data: null,
+      data: null as any,
     };
   }
 }
@@ -207,6 +207,7 @@ class SimpleMavenExecutorStrategy implements ExecutorStrategy {
       });
       return response;
     }
+    throw new Error("No latest build found");
   }
 }
 
@@ -264,6 +265,7 @@ class DetailedMavenExecutorStrategy implements ExecutorStrategy {
       });
       return response;
     }
+    throw new Error("No latest build found");
   }
 }
 

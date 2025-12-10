@@ -38,25 +38,26 @@ export default async (context: PlatformContext, data: BeforeDownloadRequest): Pr
         message,
         headers: {}
     }
+}
 
-    type ForbiddenProperty = {
-        key: string,
-        values: string[]
-    };
-    type ArtifactProperties = {
-        [key: string]: string[]
-    }
+type ForbiddenProperty = {
+    key: string,
+    values: string[]
+};
 
-    function isPropertyPresent(forbiddenProperty: ForbiddenProperty, artifactProperties: ArtifactProperties): boolean {
-        const artifactPropertyKeys = new Set(Object.keys(artifactProperties));
-        if(artifactPropertyKeys.has(forbiddenProperty.key)) {
-            const artifactPropertyValues = new Set(artifactProperties[forbiddenProperty.key]);
-            for(const forbiddenValue of forbiddenProperty.values) {
-                if(artifactPropertyValues.has(forbiddenValue)){
-                    return true;
-                }
+type ArtifactProperties = {
+    [key: string]: string[]
+}
+
+function isPropertyPresent(forbiddenProperty: ForbiddenProperty, artifactProperties: ArtifactProperties): boolean {
+    const artifactPropertyKeys = new Set(Object.keys(artifactProperties));
+    if(artifactPropertyKeys.has(forbiddenProperty.key)) {
+        const artifactPropertyValues = new Set(artifactProperties[forbiddenProperty.key]);
+        for(const forbiddenValue of forbiddenProperty.values) {
+            if(artifactPropertyValues.has(forbiddenValue)){
+                return true;
             }
         }
-        return false;
     }
+    return false;
 }

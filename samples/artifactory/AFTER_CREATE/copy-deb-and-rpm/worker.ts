@@ -1,5 +1,5 @@
-import { PlatformContext } from 'jfrog-workers';
-import { AfterCreateRequest, AfterCreateResponse } from './types';
+import { PlatformContext, IPlatformHttpResponse } from 'jfrog-workers';
+import { AfterCreateRequest, AfterCreateResponse, RepoPath } from './types';
 
 
 const debRepositoryList = ["debian"]  //if something is created here...
@@ -25,7 +25,7 @@ async function copyPackage(context: PlatformContext, repoPath: RepoPath) {
 async function copyAction(context: PlatformContext, repoPath: RepoPath, list: string[]) {
     if ((list.includes(repoPath.key)) && (!repoPath.isFolder)) {
         const layoutMatch = layOutRegex.exec(`${repoPath.key}/${repoPath.path}`);
-        if (repoPath.path.endsWith("rpm") && layoutMatch) {
+        if (repoPath.path.endsWith("rpm") && layoutMatch && layoutMatch.groups) {
             const yumRepoCopy = yumRepoCopyList[list.indexOf(repoPath.key)];
             const newName=renameTimestampToSnapshot(repoPath);
             const dstPath = `${layoutMatch.groups.module}/${newName}`;
@@ -40,7 +40,7 @@ async function copyAction(context: PlatformContext, repoPath: RepoPath, list: st
             } catch (e) {
                 console.error(`Unable to copy artifact to ${yumRepoCopy}: ` + e.message);
             }
-        } else if (repoPath.path.endsWith("deb") && layoutMatch) {
+        } else if (repoPath.path.endsWith("deb") && layoutMatch && layoutMatch.groups) {
             const debRepoCopy = debRepoCopyList[list.indexOf(repoPath.key)];
             const newName=renameTimestampToSnapshot(repoPath);
             const dstPath = `pool/${layoutMatch.groups.module}/${newName}`;
@@ -66,7 +66,7 @@ async function copyAction(context: PlatformContext, repoPath: RepoPath, list: st
     }
 }
 
-async function updateProperties(context: PlatformContext, repoPath: RepoPath) {
+async function updateProperties(context: PlatformContext, repoPath: RepoPath): Promise<IPlatformHttpResponse> {
     return context.clients.platformHttp.put(`/artifactory/api/storage/${repoPath.key}/${repoPath.path}?properties=` +
         'deb.distribution=trusty,jessie,xenial,stretch,bionic,buster,focal,jammy;' +
         'deb.component=main;' +
@@ -78,7 +78,7 @@ function renameTimestampToSnapshot(repoPath: RepoPath): string {
         const name: string = repoPath.path;
         const timeStampMatch = /\d{8}\.\d{6}-\d{4}/.exec(name);
         if(timeStampMatch) {
-            const newName = name.replaceAll(timeStampMatch[0], "SNAPSHOT");
+            const newName = name.replace(new RegExp(timeStampMatch[0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), "SNAPSHOT");
             console.info(`Renaming package ${name} to ${newName}`);
             return newName
         } else {
@@ -86,6 +86,7 @@ function renameTimestampToSnapshot(repoPath: RepoPath): string {
         }
     }catch(e) {
         console.warn("Unable to rename Timestamp to Snapshot " + e);
+        return repoPath.path;
     }
 }
 
@@ -93,13 +94,13 @@ function renameTimestampToSnapshot(repoPath: RepoPath): string {
 async function retryOnStatus<T>(context: PlatformContext, task: () => Promise<T>, status: number | number[], nTimes: number, intervalMillis: number): Promise<T> {
     let currentTrial = 0;
     let success = false;
-    let lastStatusCode = undefined;
-    let resp = null;
+    let lastStatusCode: number | undefined = undefined;
+    let resp: T | null = null;
     while (!success && ++currentTrial <= nTimes) {
         try {
             resp = await task();
             success = true;
-        } catch (e) {
+        } catch (e: any) {
             if (!e.status) {
                 console.error(e.message);
             }
@@ -117,5 +118,5 @@ async function retryOnStatus<T>(context: PlatformContext, task: () => Promise<T>
             throw new Error(`Received status code ${lastStatusCode}, not retrying`);
         }
     }
-    return resp;
+    return resp as T;
 }

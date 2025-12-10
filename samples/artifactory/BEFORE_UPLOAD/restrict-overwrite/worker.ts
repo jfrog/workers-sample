@@ -1,5 +1,5 @@
 import { PlatformContext } from 'jfrog-workers';
-import { BeforeUploadRequest, BeforeUploadResponse, UploadStatus } from './types';
+import { BeforeUploadRequest, BeforeUploadResponse, UploadStatus, RepoPath } from './types';
 
 export default async function (context: PlatformContext, data: BeforeUploadRequest): Promise<Partial<BeforeUploadResponse>> {
     try {
@@ -10,6 +10,10 @@ export default async function (context: PlatformContext, data: BeforeUploadReque
 }
 
 async function restrictOverwrite(context: PlatformContext, data: BeforeUploadRequest): Promise<Partial<BeforeUploadResponse>> {
+    if (!data.metadata || !data.metadata.repoPath) {
+        return { status: UploadStatus.UPLOAD_PROCEED };
+    }
+    
     const existingItem = await getExistingItemInfo(context, data.metadata.repoPath);
 
     if (existingItem && !(data.metadata.repoPath.isFolder && existingItem.isFolder)) {
@@ -33,6 +37,7 @@ async function getExistingItemInfo(context: PlatformContext, repoPath: RepoPath)
     if (aqlResult.length) {
         return { isFolder: aqlResult[0].type === 'folder' };
     }
+    return undefined;
 }
 
 async function runAql(context: PlatformContext, query: string) {

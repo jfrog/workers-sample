@@ -127,6 +127,7 @@ class Repositories {
             return res.data?.children ?? res.data?.files ?? [];
         } catch (x) {
             console.warn(`Cannot get ${repo} files: ${x.message}`);
+            return [];
         }
     }
 }
