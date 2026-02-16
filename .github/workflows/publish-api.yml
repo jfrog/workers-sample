@@ -1,0 +1,60 @@
+name: Publish Workers API
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'api/**'
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org/'
+
+      - name: Create npmrc
+        working-directory: ./api
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_EMAIL: npm@jfrog.com
+        run: |
+          echo "Creating npmrc for publish"
+          cat > .npmrc << EOF
+          always-auth=true
+          email=${NPM_EMAIL}
+          registry=https://registry.npmjs.org/
+          //registry.npmjs.org/:_authToken=${NPM_TOKEN}
+          EOF
+          cat .npmrc
+          echo "Creating npmrc done"
+  
+      - name: Install dependencies
+        working-directory: ./api
+        run: npm install --no-progress
+
+      - name: Update minor version
+        working-directory: ./api
+        run: npm version minor --no-git-tag-version
+
+      - name: Build
+        working-directory: ./api
+        run: npm run build
+
+      - name: Publish to npm
+        working-directory: ./api
+        run: |
+          echo "Publishing API npm package"
+          npm publish
+          echo "Publishing API npm package done"
