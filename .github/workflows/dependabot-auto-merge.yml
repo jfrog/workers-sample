@@ -1,0 +1,48 @@
+name: Dependabot Auto-approve and Auto-merge
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  dependabot-auto-approve:
+    runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Approve Dependabot PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.pulls.createReview({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+              event: 'APPROVE',
+              body: '🤖 Auto-approved by Dependabot workflow'
+            })
+
+      - name: Enable auto-merge for Dependabot PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            try {
+              await github.rest.pulls.enableAutoMerge({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: context.payload.pull_request.number,
+                merge_method: 'squash'
+              });
+              console.log('Auto-merge enabled successfully');
+            } catch (error) {
+              // Auto-merge might not be available if branch protection requires additional checks
+              // or if the PR has conflicts. Log the error but don't fail the workflow.
+              console.log('Could not enable auto-merge:', error.message);
+              console.log('This might be due to branch protection rules or PR conflicts.');
+            }
