@@ -37,7 +37,7 @@ export default async (context: PlatformContext, data: BeforeDownloadRequest): Pr
             }
         ],
         "offset": number
-    } = null;
+    };
 
     try {
         const artifactName = data.metadata.repoPath.path.substr(data.metadata.repoPath.path.lastIndexOf('/') + 1);
