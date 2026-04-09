@@ -36,6 +36,6 @@
     "axios": "1.14.0"
   },
   "devDependencies": {
-    "typescript": "^5.4.2"
+    "typescript": "^6.0.2"
   }
 }
