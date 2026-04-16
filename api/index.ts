@@ -62,7 +62,16 @@ export interface PlatformHttpClient {
    * @param {Record<string, string>} headers - additional headers used in the request
    */
   delete(endpoint: string, headers?: Record<string, string>): Promise<IPlatformHttpResponse>;
-}
+
+  /**
+   * Performs an HTTP request against the configured JFrog platform.
+   * @param {string} method - HTTP verb (GET, POST, PUT, PATCH, DELETE, etc.).
+   * @param {string} endpoint - Path relative to the client base URL (e.g. `/artifactory/api/repositories`).
+   * @param {Record<string, string>} headers - Optional extra headers merged with the client defaults.
+   * @param {any} data - Optional request body for methods that support one.
+   */
+    request(method: string, endpoint: string, headers?: Record<string, string>, data?: any): Promise<IPlatformHttpResponse>;
+  }
 
 export interface PlatformClients {
   /**
