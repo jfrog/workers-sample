@@ -32,28 +32,33 @@ jobs:
           echo "Releasing version: $VERSION"
 
       - name: Check if already released
+        id: check
         run: |
           TAG="jfrog-workers/${{ steps.version.outputs.version }}"
           if git ls-remote --tags origin "refs/tags/$TAG" | grep -q .; then
             echo "Tag '$TAG' already exists — version ${{ steps.version.outputs.version }} has already been released."
-            exit 1
+            echo "skip=true" >> $GITHUB_OUTPUT
           fi
 
       - name: Configure git
+        if: steps.check.outputs.skip != 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Create release branch
+        if: steps.check.outputs.skip != 'true'
         run: git checkout -b "jfrog-workers-${{ steps.version.outputs.version }}"
 
       - name: Setup Node.js
+        if: steps.check.outputs.skip != 'true'
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org/'
 
       - name: Create npmrc
+        if: steps.check.outputs.skip != 'true'
         working-directory: ./api
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -67,10 +72,12 @@ jobs:
           EOF
 
       - name: Install dependencies
+        if: steps.check.outputs.skip != 'true'
         working-directory: ./api
         run: npm install --no-progress
 
       - name: Commit version bump
+        if: steps.check.outputs.skip != 'true'
         run: |
           NEW_VERSION=$(jq -r '.version' api/package.json)
           git add api/package.json
@@ -78,10 +85,12 @@ jobs:
           git commit -m "chore: bump version to ${NEW_VERSION} [skip ci]"
 
       - name: Build
+        if: steps.check.outputs.skip != 'true'
         working-directory: ./api
         run: npm run build
 
       - name: Publish to npm
+        if: steps.check.outputs.skip != 'true'
         working-directory: ./api
         run: |
           echo "Publishing API npm package"
@@ -89,9 +98,11 @@ jobs:
           echo "Publishing API npm package done"
 
       - name: Push release branch
+        if: steps.check.outputs.skip != 'true'
         run: git push origin "jfrog-workers-${{ steps.version.outputs.version }}"
 
       - name: Create and push release tag
+        if: steps.check.outputs.skip != 'true'
         run: |
           TAG="jfrog-workers/${{ steps.version.outputs.version }}"
           git tag "$TAG"
@@ -99,6 +110,7 @@ jobs:
           echo "Created tag: $TAG"
 
       - name: Merge to main
+        if: steps.check.outputs.skip != 'true'
         run: |
           BRANCH="jfrog-workers-${{ steps.version.outputs.version }}"
           git fetch origin main
