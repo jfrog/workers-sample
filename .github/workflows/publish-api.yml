@@ -9,7 +9,7 @@ on:
       - 'api/**'
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   publish:
@@ -17,6 +17,35 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Bump minor version
+        working-directory: ./api
+        run: npm version minor --no-git-tag-version
+
+      - name: Read version
+        id: version
+        run: |
+          VERSION=$(jq -r '.version' api/package.json)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Releasing version: $VERSION"
+
+      - name: Check if already released
+        run: |
+          TAG="jfrog-workers/${{ steps.version.outputs.version }}"
+          if git ls-remote --tags origin "refs/tags/$TAG" | grep -q .; then
+            echo "Tag '$TAG' already exists — version ${{ steps.version.outputs.version }} has already been released."
+            exit 1
+          fi
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Create release branch
+        run: git checkout -b "jfrog-workers-${{ steps.version.outputs.version }}"
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -30,23 +59,23 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_EMAIL: npm@jfrog.com
         run: |
-          echo "Creating npmrc for publish"
           cat > .npmrc << EOF
           always-auth=true
           email=${NPM_EMAIL}
           registry=https://registry.npmjs.org/
           //registry.npmjs.org/:_authToken=${NPM_TOKEN}
           EOF
-          cat .npmrc
-          echo "Creating npmrc done"
-  
+
       - name: Install dependencies
         working-directory: ./api
         run: npm install --no-progress
 
-      - name: Update minor version
-        working-directory: ./api
-        run: npm version minor --no-git-tag-version
+      - name: Commit version bump
+        run: |
+          NEW_VERSION=$(jq -r '.version' api/package.json)
+          git add api/package.json
+          git add api/package-lock.json 2>/dev/null || true
+          git commit -m "chore: bump version to ${NEW_VERSION} [skip ci]"
 
       - name: Build
         working-directory: ./api
@@ -58,3 +87,21 @@ jobs:
           echo "Publishing API npm package"
           npm publish
           echo "Publishing API npm package done"
+
+      - name: Push release branch
+        run: git push origin "jfrog-workers-${{ steps.version.outputs.version }}"
+
+      - name: Create and push release tag
+        run: |
+          TAG="jfrog-workers/${{ steps.version.outputs.version }}"
+          git tag "$TAG"
+          git push origin "$TAG"
+          echo "Created tag: $TAG"
+
+      - name: Merge to main
+        run: |
+          BRANCH="jfrog-workers-${{ steps.version.outputs.version }}"
+          git fetch origin main
+          git checkout main
+          git merge --no-ff "$BRANCH" -m "chore: merge release ${BRANCH} into main [skip ci]"
+          git push origin main
