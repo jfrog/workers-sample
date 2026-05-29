@@ -173,11 +173,6 @@ export interface PlatformContext {
      */
     platformToken: string;
     /**
-     * Username of the principal that triggered this execution (for example via HTTP manual execute).
-     * Empty when not available.
-     */
-    triggeringUserName: string;
-    /**
      * State manager to store and retrieve state for this Worker between executions.
      * NOTE: This state is not safe against concurrent executions of the same Worker.
      * NOTE: The state will not be saved in case of execution failure.
