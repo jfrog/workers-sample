@@ -96,6 +96,8 @@ export interface BeforeDownloadResponse {
     status: DownloadStatus;
     /** Message to print to the log, in case of an error it will be printed as a warning */
     message: string;
+    /** Response headers to add/override, if any */
+    headers: { [key: string]: Header };
 }
 
 export enum DownloadStatus {

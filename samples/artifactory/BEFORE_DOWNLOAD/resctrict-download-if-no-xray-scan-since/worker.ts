@@ -18,46 +18,58 @@ export default async (context: PlatformContext, data: BeforeDownloadRequest): Pr
     let message = '';
 
     let responseData: {
-        "data": [
-            {
-                "name": string,
-                "repo_path": string,
-                "package_id": string,
-                "version": string,
-                "sec_issues": {
-                    "critical": number,
-                    "high": number,
-                    "low": number,
-                    "medium": number,
-                    "total": number
-                },
-                "scans_status": {
-                    "overall": {
-                        "status": string,
-                        "time": string
-                    }
-                },
-                "size": string,
-                "violations": number,
-                "created": string,
-                "deployed_by": string,
-                "repo_full_path": string
-            }
-        ],
+        "data": Array<{
+            "name": string,
+            "repo_path": string,
+            "package_id": string,
+            "version": string,
+            "sec_issues": {
+                "critical": number,
+                "high": number,
+                "low": number,
+                "medium": number,
+                "total": number
+            },
+            "scans_status": {
+                "overall": {
+                    "status": string,
+                    "time": string
+                }
+            },
+            "size": string,
+            "violations": number,
+            "created": string,
+            "deployed_by": string,
+            "repo_full_path": string
+        }>,
         "offset": number
     } | null = null;
 
     try {
-        const artifactName = data.metadata.repoPath.path.substr(data.metadata.repoPath.path.lastIndexOf('/') + 1);
+        if (!data.metadata?.repoPath) {
+            throw new Error('Missing repoPath metadata on the download request');
+        }
+        const repoPath = data.metadata.repoPath.path;
         const repoKey = data.metadata.repoPath.key;
+        // search= only free-text matches on artifact name, so it can return several
+        // artifacts sharing that name (e.g. every Docker tag's manifest.json); we must
+        // pick out the one that is actually being downloaded rather than trusting data[0].
+        const artifactName = repoPath.slice(repoPath.lastIndexOf('/') + 1);
+        const expectedRepoFullPath = `${repoKey}/${repoPath}`;
 
-        const res = await context.clients.platformHttp.get(`/xray/api/v1/artifacts?repo=${repoKey}&search=${artifactName}&num_of_rows=1`);
+        const res = await context.clients.platformHttp.get(`/xray/api/v1/artifacts?repo=${repoKey}&search=${artifactName}&num_of_rows=100`);
         responseData = res.data;
 
         if (res.status === 200 && responseData) {
-            // console.log(responseData);
-            console.log(responseData.data);
-            const lastScanDetails = responseData.data[0].scans_status.overall;
+            const matchedArtifact = responseData.data.find(artifact => artifact.repo_full_path === expectedRepoFullPath);
+            if (!matchedArtifact) {
+                return {
+                    status: DownloadStatus.DOWNLOAD_WARN,
+                    message: "Could not find an Xray scan result matching this artifact. Proceeding with download with a warning.",
+                    headers: {} // This can be populated if response headers are required to be added/overriden.
+                }
+            }
+            const lastScanDetails = matchedArtifact.scans_status.overall;
             if (lastScanDetails.status !== "DONE") {
                 return {
                     status: DownloadStatus.DOWNLOAD_WARN,
@@ -91,7 +103,7 @@ export default async (context: PlatformContext, data: BeforeDownloadRequest): Pr
             status = DownloadStatus.DOWNLOAD_WARN;
             message = 'Request returned unexpected result. Download will proceed with warning.'
         }
-    } catch (error) {
+    } catch (error: any) {
         message = `Encountered error: ${error.message} during scan check. Download will proceed with warning.`;
         status = DownloadStatus.DOWNLOAD_WARN;
         console.error(`Request failed: ${error.message}`);
@@ -112,7 +124,7 @@ async function checkIfXrayAvailable(context: PlatformContext): Promise<boolean> 
             throw new Error("Xray not available");
         }
         return true;
-    } catch (error) {
+    } catch (error: any) {
         console.log(`Encountered error ${error.message} while checking for xray readiness. Allowing download with a warning`);
         return false;
     }
