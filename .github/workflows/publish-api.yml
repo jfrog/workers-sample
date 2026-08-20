@@ -30,10 +30,11 @@ jobs:
       - name: Compute next version from latest release tag
         working-directory: ./api
         run: |
+          set -euo pipefail
           LATEST=$(git ls-remote --tags origin 'refs/tags/jfrog-workers/*' \
             | awk '{print $2}' \
             | sed 's#^refs/tags/jfrog-workers/##' \
-            | grep -v '\^{}$' \
+            | { grep -v '\^{}$' || true; } \
             | sort -t. -k1,1n -k2,2n -k3,3n \
             | tail -1)
           if [ -z "$LATEST" ]; then
