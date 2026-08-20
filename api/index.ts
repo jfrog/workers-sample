@@ -151,6 +151,32 @@ export interface PlatformHttpClientError {
   status: number;
 }
 
+export interface PlatformCrypto {
+  /**
+   * Computes a cryptographic hash of the given data
+   * @param {string} algorithm - The hash algorithm to use. Supported: 'sha256', 'sha512'
+   * @param {string} data - The data to hash
+   * @param {string} encoding - The output encoding. Defaults to 'hex'
+   */
+  hash(algorithm: 'sha256' | 'sha512', data: string, encoding?: 'hex' | 'base64'): string;
+
+  /**
+   * Computes an HMAC of the given data using the given key
+   * @param {string} algorithm - The hash algorithm to use. Supported: 'sha256', 'sha512'
+   * @param {string} key - The HMAC key
+   * @param {string} data - The data to authenticate
+   * @param {string} encoding - The output encoding. Defaults to 'hex'
+   */
+  hmac(algorithm: 'sha256' | 'sha512', key: string, data: string, encoding?: 'hex' | 'base64'): string;
+
+  /**
+   * Generates cryptographically secure random bytes
+   * @param {number} size - The number of random bytes to generate
+   * @param {string} encoding - The output encoding. Defaults to 'hex'
+   */
+  randomBytes(size: number, encoding?: 'hex' | 'base64'): string;
+}
+
 export interface PlatformContext {
     /**
      * HTTP clients to perform requests to your JFrog platform or to the outside
@@ -179,6 +205,10 @@ export interface PlatformContext {
      * NOTE: The state is limited in size and number of items. Check the Worker documentation for more details.
      */
     state: StateManager;
+    /**
+     * Utility to compute cryptographic hashes, HMACs, and generate random bytes
+     */
+    crypto: PlatformCrypto;
     /**
      * Will wait for the number of millisecond.
      * The waiting time is limited by the execution time of the function.
