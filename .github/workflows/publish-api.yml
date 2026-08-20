@@ -20,9 +20,32 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Bump minor version
+      # The version committed in api/package.json on `main` is only a placeholder — it can go
+      # stale if a prior run's "Merge to main" step fails after already publishing (as happened
+      # before this fix: a publish succeeded but its merge-back never landed, so `main` kept
+      # showing an old version and the next run's collision check silently skipped a real
+      # release). Git tags are the source of truth for what has actually been published, so the
+      # next version is always computed from the latest `jfrog-workers/*` tag on the remote —
+      # never from whatever happens to be committed on `main`.
+      - name: Compute next version from latest release tag
         working-directory: ./api
-        run: npm version minor --no-git-tag-version
+        run: |
+          LATEST=$(git ls-remote --tags origin 'refs/tags/jfrog-workers/*' \
+            | awk '{print $2}' \
+            | sed 's#^refs/tags/jfrog-workers/##' \
+            | grep -v '\^{}$' \
+            | sort -t. -k1,1n -k2,2n -k3,3n \
+            | tail -1)
+          if [ -z "$LATEST" ]; then
+            echo "No jfrog-workers/* tag found on origin; falling back to the version committed in api/package.json"
+            LATEST=$(jq -r '.version' package.json)
+          fi
+          echo "Latest released version: $LATEST"
+          MAJOR=$(echo "$LATEST" | cut -d. -f1)
+          MINOR=$(echo "$LATEST" | cut -d. -f2)
+          NEXT_VERSION="${MAJOR}.$((MINOR + 1)).0"
+          echo "Computed next version: $NEXT_VERSION"
+          npm version "$NEXT_VERSION" --no-git-tag-version --allow-same-version
 
       - name: Read version
         id: version
