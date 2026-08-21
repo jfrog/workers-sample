@@ -1,0 +1,9 @@
+{
+  "name": "archive-old-artifact",
+  "description": "This worker script is designed to archive old artifacts in Artifactory based on configurable criteria. It is useful for managing storage and maintaining repository hygiene.",
+  "secrets": {},
+  "sourceCodePath": "./worker.ts",
+  "action": "GENERIC_EVENT",
+  "enabled": false,
+  "debug": true
+}
