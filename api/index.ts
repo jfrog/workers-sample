@@ -1,4 +1,71 @@
-import { AxiosInstance } from "axios";
+import { AxiosInstance, AxiosRequestConfig } from "axios";
+
+export interface ExtendedAxios {
+    /**
+     * Triggers an HTTP GET request and does not wait for the response (fire-and-forget).
+     * Note: completion is not guaranteed. If the target server ties request processing to the client connection, it may abort the work when the client disconnects.
+     */
+    getAndForget: <D = any, P = any>(
+        url: string,
+        config?: AxiosRequestConfig<D, P>
+    ) => void;
+
+    /**
+     * Triggers an HTTP PUT request and does not wait for the response (fire-and-forget).
+     * Note: completion is not guaranteed. If the target server ties request processing to the client connection, it may abort the work when the client disconnects.
+     */
+    putAndForget: <D = any, P = any>(
+        url: string,
+        data?: D,
+        config?: AxiosRequestConfig<D, P>
+    ) => void;
+
+    /**
+     * Triggers an HTTP POST request and does not wait for the response (fire-and-forget).
+     * Note: completion is not guaranteed. If the target server ties request processing to the client connection, it may abort the work when the client disconnects.
+     */
+    postAndForget: <D = any, P = any>(
+        url: string,
+        data?: D,
+        config?: AxiosRequestConfig<D, P>
+    ) => void;
+
+    /**
+     * Triggers an HTTP DELETE request and does not wait for the response (fire-and-forget).
+     * Note: completion is not guaranteed. If the target server ties request processing to the client connection, it may abort the work when the client disconnects.
+     */
+    deleteAndForget: <D = any, P = any>(
+        url: string,
+        config?: AxiosRequestConfig<D, P>
+    ) => void;
+
+    /**
+     * Triggers an HTTP HEAD request and does not wait for the response (fire-and-forget).
+     * Note: completion is not guaranteed. If the target server ties request processing to the client connection, it may abort the work when the client disconnects.
+     */
+    headAndForget: <D = any, P = any>(
+        url: string,
+        config?: AxiosRequestConfig<D, P>
+    ) => void;
+
+    /**
+     * Triggers an HTTP PATCH request and does not wait for the response (fire-and-forget).
+     * Note: completion is not guaranteed. If the target server ties request processing to the client connection, it may abort the work when the client disconnects.
+     */
+    patchAndForget: <D = any, P = any>(
+        url: string,
+        data?: D,
+        config?: AxiosRequestConfig<D, P>
+    ) => void;
+
+    /**
+     * Triggers an HTTP REQUEST and does not wait for the response (fire-and-forget).
+     * Note: completion is not guaranteed. If the target server ties request processing to the client connection, it may abort the work when the client disconnects.
+     */
+    requestAndForget: <D = any, P = any>(
+        config: AxiosRequestConfig<D, P>
+    ) => void;
+}
 
 /**
  * Response returned by JFrog platform API
@@ -81,7 +148,7 @@ export interface PlatformClients {
   /**
    * HTTP client (axios) to perform requests to the outside
    */
-  axios: Pick<AxiosInstance, 'get'|'put'|'post'|'delete'|'head'|'patch'|'request'>;
+  axios: Pick<AxiosInstance, 'get'|'put'|'post'|'delete'|'head'|'patch'|'request'> & ExtendedAxios;
 }
 
 export interface PlatformSecrets {
