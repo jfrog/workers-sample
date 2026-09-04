@@ -4,6 +4,8 @@
 
 Generic Event Workers are specialized JFrog workers that are not tied to specific Artifactory events. Instead, they are executed on demand via API calls or manual invocation. These workers are highly customizable, allowing you to perform tasks that are not bound to predefined triggers.
 
+Use these code samples to jumpstart your development. These are for reference only, and up to you to adjust, test and maintain.
+
 ## Key Features
 
 - **Manual Execution:** Can be triggered manually or through a specific API call.

@@ -2,6 +2,8 @@
 
 Artifactory workers allow you to automate tasks, enforce policies, and integrate with external systems based on specific events such as uploading, downloading, or managing artifacts and properties.
 
+Use these code samples to jumpstart your development. These are for reference only, and up to you to adjust, test and maintain.
+
 ### Available Workers
 
 This repository includes sample workers for the following Artifactory events:

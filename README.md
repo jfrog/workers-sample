@@ -11,7 +11,7 @@ See the full documentation [here](https://jfrog.com/help/r/jfrog-platform-admini
 
 ## Using the samples
 
-This repository contains a collection of sample workers for common use cases. Feel free to use, modify, and extend these samples to accomplish your use cases.
+This repository contains a collection of sample workers for common use cases. Use these code samples to jumpstart your development. These are for reference only, and up to you to adjust, test and maintain.
 
 We have created these TypeScript samples based on [Artifactory User Plugin Samples](https://github.com/jfrog/artifactory-user-plugins).
 

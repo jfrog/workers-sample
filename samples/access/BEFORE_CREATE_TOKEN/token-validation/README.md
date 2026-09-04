@@ -2,6 +2,8 @@
 
 The worker enforces 3 checks before allowing tokens creation.
 
+Use these code samples to jumpstart your development. These are for reference only, and up to you to adjust, test and maintain.
+
 * The number of tokens owned by the subject should not exceeds a specific count.
 * If it is a user token that is been created its expiry should not exceeds 1 month (the duration can be parameterized)
 * If it is a service token that is been created its expiry should not exceeds 1 year (the duration can be parameterized)
