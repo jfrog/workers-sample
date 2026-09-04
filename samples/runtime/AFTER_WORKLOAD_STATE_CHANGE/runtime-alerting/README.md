@@ -4,6 +4,8 @@
 
 The `runtime-alert` project is designed to monitor and alert on vulnerabilities and risks associated with image tags in a Kubernetes cluster. It integrates with Elasticsearch for storing vulnerability data (optional) and Slack for sending alerts.
 
+Use these code samples to jumpstart your development. These are for reference only, and up to you to adjust, test and maintain.
+
 ## Features
 
 - Retrieves secrets for Slack webhook URL and optionally Elasticsearch API key and URL.
