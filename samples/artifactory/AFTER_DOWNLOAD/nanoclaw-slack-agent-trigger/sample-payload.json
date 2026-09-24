@@ -1,0 +1,17 @@
+{
+  "metadata": {
+    "repoPath": {
+      "key": "npm-remote",
+      "path": "left-pad/-/left-pad-1.3.0.tgz",
+      "id": "npm-remote:left-pad/-/left-pad-1.3.0.tgz",
+      "isRoot": false,
+      "isFolder": false
+    },
+    "repoType": 2
+  },
+  "userContext": {
+    "id": "nanoclaw-agent-group-artifactory-token",
+    "isToken": true,
+    "realm": ""
+  }
+}

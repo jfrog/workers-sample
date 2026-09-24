@@ -1,0 +1,21 @@
+{
+    "name": "nanoclaw-slack-agent-trigger",
+    "description": "Posts an AFTER_DOWNLOAD event to Slack in the exact shape NanoClaw's pattern-mode wiring expects, so a live NanoClaw agent picks it up as input and can act on it (verify the package, reply, escalate) instead of the event only being logged.",
+    "filterCriteria": {
+        "artifactFilterCriteria": {
+            "repoKeys": [
+                "npm-remote",
+                "apt-remote"
+            ]
+        }
+    },
+    "secrets": {},
+    "properties": {
+        "slackChannelId": "<slack-channel-id>",
+        "triggerPrefix": "nanoclaw-audit:"
+    },
+    "sourceCodePath": "./worker.ts",
+    "action": "AFTER_DOWNLOAD",
+    "enabled": false,
+    "debug": true
+}
