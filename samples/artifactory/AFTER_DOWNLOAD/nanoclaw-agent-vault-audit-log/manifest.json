@@ -1,0 +1,21 @@
+{
+    "name": "nanoclaw-agent-vault-audit-log",
+    "description": "Audits AFTER_DOWNLOAD events fired when a NanoClaw agent's OneCLI Agent Vault-injected Artifactory credential resolves a package or MCP server, so admins get a registry-side record of what was actually pulled to complement NanoClaw's own approval trail.",
+    "filterCriteria": {
+        "artifactFilterCriteria": {
+            "repoKeys": [
+                "npm-remote",
+                "apt-remote"
+            ]
+        }
+    },
+    "secrets": {},
+    "properties": {
+        "auditSinkUrl": "https://<external_audit_sink>",
+        "nanoclawIdentities": ""
+    },
+    "sourceCodePath": "./worker.ts",
+    "action": "AFTER_DOWNLOAD",
+    "enabled": false,
+    "debug": true
+}
