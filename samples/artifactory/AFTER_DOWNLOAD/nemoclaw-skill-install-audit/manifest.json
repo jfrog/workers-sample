@@ -1,0 +1,19 @@
+{
+    "name": "nemoclaw-skill-install-audit",
+    "description": "Audits AFTER_DOWNLOAD events for skill archives pulled from an Artifactory Agent Skills repo, recording the registry identity and Xray/evidence status of every install so downloads served to a NemoClaw sandbox get a durable provenance trail.",
+    "filterCriteria": {
+        "artifactFilterCriteria": {
+            "repoKeys": [
+                "nemoclaw-skills-local"
+            ]
+        }
+    },
+    "secrets": {},
+    "properties": {
+        "auditSinkUrl": "https://<external_audit_sink>"
+    },
+    "sourceCodePath": "./worker.ts",
+    "action": "AFTER_DOWNLOAD",
+    "enabled": false,
+    "debug": true
+}
