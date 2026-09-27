@@ -1,0 +1,17 @@
+{
+  "metadata": {
+    "repoPath": {
+      "key": "nemoclaw-skills-local",
+      "path": "cuopt-routing-skill/1.2.0/cuopt-routing-skill-1.2.0.zip",
+      "id": "nemoclaw-skills-local:cuopt-routing-skill/1.2.0/cuopt-routing-skill-1.2.0.zip",
+      "isRoot": false,
+      "isFolder": false
+    },
+    "repoType": 1
+  },
+  "userContext": {
+    "id": "nemoclaw-sandbox-my-assistant",
+    "isToken": true,
+    "realm": ""
+  }
+}
