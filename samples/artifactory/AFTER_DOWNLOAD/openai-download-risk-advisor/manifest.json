@@ -1,0 +1,22 @@
+{
+    "name": "openai-download-risk-advisor",
+    "description": "This worker is triggered by the `AFTER_DOWNLOAD` event of Artifactory. It looks up the downloaded artifact's existing Xray scan result and, if issues or violations are found, asks OpenAI's Chat Completions API to turn the raw counts into a short risk summary posted to Slack.",
+    "filterCriteria": {
+        "artifactFilterCriteria": {
+            "repoKeys": [
+                "example-repo-local"
+            ]
+        }
+    },
+    "secrets": {},
+    "properties": {
+        "minIssuesForAiSummary": "1",
+        "openAiModel": "gpt-4o-mini",
+        "openAiMaxTokens": "300",
+        "openAiApiUrl": "https://api.openai.com/v1/chat/completions"
+    },
+    "sourceCodePath": "./worker.ts",
+    "action": "AFTER_DOWNLOAD",
+    "enabled": false,
+    "debug": true
+}
