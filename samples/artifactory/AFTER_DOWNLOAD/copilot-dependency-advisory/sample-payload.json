@@ -1,0 +1,17 @@
+{
+  "metadata": {
+    "repoPath": {
+      "key": "npm-local",
+      "path": "@acme/left-pad-fork/1.0.0/left-pad-fork-1.0.0.tgz",
+      "id": "npm-local:@acme/left-pad-fork/1.0.0/left-pad-fork-1.0.0.tgz",
+      "isRoot": false,
+      "isFolder": false
+    },
+    "repoType": 1
+  },
+  "userContext": {
+    "id": "ci-payments-service",
+    "isToken": true,
+    "realm": ""
+  }
+}

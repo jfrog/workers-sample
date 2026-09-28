@@ -1,0 +1,20 @@
+{
+    "name": "copilot-dependency-advisory",
+    "description": "This worker is triggered by the `AFTER_DOWNLOAD` event of Artifactory. The first time an artifact tagged with the `copilot.advisor.repo` and `copilot.advisor.repoBaseBranch` properties is downloaded, it opens a GitHub issue in that repo and assigns it to GitHub Copilot's coding agent to vet the new dependency. Artifacts without both properties are a NOP.",
+    "sourceCodePath": "./worker.ts",
+    "action": "AFTER_DOWNLOAD",
+    "enabled": false,
+    "debug": true,
+    "secrets": {},
+    "properties": {
+        "githubApiUrl": "https://api.github.com",
+        "githubApiVersion": "2022-11-28"
+    },
+    "filterCriteria": {
+        "artifactFilterCriteria": {
+            "repoKeys": [
+                "example-repo-local"
+            ]
+        }
+    }
+}
