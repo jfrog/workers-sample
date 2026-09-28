@@ -1,0 +1,17 @@
+{
+  "metadata": {
+    "repoPath": {
+      "key": "npm-local",
+      "path": "npm-local/@jfrog/element-plus/2.14.0-csp.7/element-plus-2.14.0-csp.7.tgz",
+      "id": "npm-local:@jfrog/element-plus/2.14.0-csp.7/element-plus-2.14.0-csp.7.tgz",
+      "isRoot": false,
+      "isFolder": false
+    },
+    "repoType": 1
+  },
+  "userContext": {
+    "id": "openai-download-risk-advisor",
+    "isToken": true,
+    "realm": ""
+  }
+}
