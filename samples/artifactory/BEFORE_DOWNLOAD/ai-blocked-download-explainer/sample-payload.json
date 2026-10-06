@@ -1,0 +1,21 @@
+{
+  "metadata": {
+    "repoPath": {
+      "key": "example-repo-local",
+      "path": "com/acme/payments/2.3.0/payments-2.3.0.jar",
+      "id": "example-repo-local:com/acme/payments/2.3.0/payments-2.3.0.jar",
+      "isRoot": false,
+      "isFolder": false
+    },
+    "name": "payments-2.3.0.jar",
+    "headOnly": false,
+    "checksum": false,
+    "repoType": 1
+  },
+  "headers": {},
+  "userContext": {
+    "id": "alice",
+    "isToken": false,
+    "realm": "internal"
+  }
+}
