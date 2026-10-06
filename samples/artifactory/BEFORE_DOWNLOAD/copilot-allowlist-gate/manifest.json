@@ -1,0 +1,25 @@
+{
+    "name": "copilot-allowlist-gate",
+    "description": "This worker is triggered by the `BEFORE_DOWNLOAD` event of Artifactory. It only lets downloads through when the artifact matches a glob in an allowlist file kept in a GitHub repository. Blocked artifacts get a GitHub issue assigned to GitHub Copilot's coding agent, which vets the dependency and opens a PR adding it to the allowlist; merging that PR unblocks the download.",
+    "sourceCodePath": "./worker.ts",
+    "action": "BEFORE_DOWNLOAD",
+    "enabled": false,
+    "debug": true,
+    "secrets": {},
+    "properties": {
+        "githubRepo": "myorg/dependency-allowlist",
+        "githubBranch": "main",
+        "allowlistPath": "approved-dependencies.json",
+        "failMode": "WARN",
+        "issueProperty": "copilot.allowlist.issue",
+        "githubApiUrl": "https://api.github.com",
+        "githubApiVersion": "2022-11-28"
+    },
+    "filterCriteria": {
+        "artifactFilterCriteria": {
+            "repoKeys": [
+                "example-repo-local"
+            ]
+        }
+    }
+}

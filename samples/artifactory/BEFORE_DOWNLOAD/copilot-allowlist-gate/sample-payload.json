@@ -1,0 +1,14 @@
+{
+  "repoPath": {
+    "key": "npm-local",
+    "path": "lodash/-/lodash-4.17.21.tgz",
+    "id": "npm-local:lodash/-/lodash-4.17.21.tgz",
+    "isRoot": false,
+    "isFolder": false
+  },
+  "userContext": {
+    "id": "ci-payments-service",
+    "isToken": true,
+    "realm": ""
+  }
+}
