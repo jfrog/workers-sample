@@ -1,5 +1,5 @@
 import { PlatformContext } from 'jfrog-workers';
-import { AfterDownloadRequest, AfterDownloadResponse, XrayArtifactsSearchResponse } from './types';
+import { AfterDownloadRequest, AfterDownloadResponse } from './types';
 
 export default async (context: PlatformContext, data: AfterDownloadRequest): Promise<AfterDownloadResponse> => {
     // Configurable via the worker's "properties" (manifest.json / Platform UI); fall back to these defaults if unset
@@ -138,4 +138,25 @@ async function askClaudeForRiskSummary(
         throw new Error('Claude response did not contain any text content.');
     }
     return text;
+}
+
+// Declared here rather than in types.ts: 'jf worker deploy' only uploads worker.ts and compiles it
+// against the platform's own event types.
+interface XrayArtifact {
+    name: string;
+    repo_path: string;
+    repo_full_path: string;
+    sec_issues: {
+        critical: number;
+        high: number;
+        medium: number;
+        low: number;
+        total: number;
+    };
+    violations: number;
+}
+
+interface XrayArtifactsSearchResponse {
+    data: XrayArtifact[];
+    offset: number;
 }
