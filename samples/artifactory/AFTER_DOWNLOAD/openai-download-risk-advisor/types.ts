@@ -58,10 +58,6 @@ export interface DownloadMetadata {
     repoType: RepoType;
 }
 
-export interface Header {
-    value: string[];
-}
-
 export interface UserContext {
     /** The username or subject */
     id: string;
@@ -92,22 +88,6 @@ export interface RepoPath {
     isFolder: boolean;
 }
 
-/** One entry from the Xray `/xray/api/v1/artifacts` search response */
-export interface XrayArtifact {
-    name: string;
-    repo_path: string;
-    repo_full_path: string;
-    sec_issues: {
-        critical: number;
-        high: number;
-        medium: number;
-        low: number;
-        total: number;
-    };
-    violations: number;
-}
-
-export interface XrayArtifactsSearchResponse {
-    data: XrayArtifact[];
-    offset: number;
+export interface Header {
+    value: string[];
 }
