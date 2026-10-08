@@ -1,0 +1,23 @@
+{
+    "name": "ai-blocked-download-explainer",
+    "description": "This worker is triggered by the `BEFORE_DOWNLOAD` event of Artifactory. It blocks downloads of artifacts whose Xray scan shows more critical security issues than allowed, and asks Claude (Anthropic API) to turn the blocking CVEs into a short, actionable explanation returned to the client and optionally posted to Slack.",
+    "filterCriteria": {
+        "artifactFilterCriteria": {
+            "repoKeys": [
+                "example-repo-local"
+            ]
+        }
+    },
+    "secrets": {},
+    "properties": {
+        "maxCriticalIssues": "0",
+        "claudeModel": "claude-haiku-4-5-20251001",
+        "claudeMaxTokens": "200",
+        "claudeApiUrl": "https://api.anthropic.com/v1/messages",
+        "claudeApiVersion": "2023-06-01"
+    },
+    "sourceCodePath": "./worker.ts",
+    "action": "BEFORE_DOWNLOAD",
+    "enabled": false,
+    "debug": true
+}
