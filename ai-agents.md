@@ -7,8 +7,6 @@ Explore ready-to-use integration samples and practical use cases to turn agent d
 > **Note**
 >
 > **Usage Responsibility Notice**: When integrating the JFrog Platform with third-party AI clients or agents, you are responsible for the configuration, management, and auditing of those integrations in accordance with your organization's policies. The behavior of third-party AI agents is governed by the terms and practices of their respective providers, not by JFrog.
->
-> We recommend configuring your AI client to operate under least-privilege principles, granting access only to the resources required for your specific workflows. Additionally, we strongly recommend enabling human-in-the-loop approval in your AI client settings, so that explicit user confirmation is required before any tool execution that creates, updates, or deletes resources in your JFrog Platform.
 
 Each sample folder includes `worker.ts`, `manifest.json`, and a README with the secrets, properties, and setup steps.
 
