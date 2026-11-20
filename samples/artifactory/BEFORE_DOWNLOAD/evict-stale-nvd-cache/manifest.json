@@ -1,0 +1,16 @@
+{
+    "name": "evict-stale-nvd-cache",
+    "description": "This worker is triggered by the `BEFORE_DOWNLOAD` event of Artifactory. It compares the last-modified timestamp of the NVD modified feed against the cached artifact's last-updated time, and evicts the cached entry when the NVD feed is newer, ensuring downstream clients always fetch fresh vulnerability data.",
+    "filterCriteria": {
+        "artifactFilterCriteria": {
+            "repoKeys": [
+                "example-repo-remote"
+            ]
+        }
+    },
+    "secrets": {},
+    "sourceCodePath": "./worker.ts",
+    "action": "BEFORE_DOWNLOAD",
+    "enabled": false,
+    "debug": true
+}
